@@ -1,0 +1,3 @@
+Nessa pasta vai ficar os arquivos do FrontEnd
+
+Padrão para commit do FrontEnd - "[FrontEnd] ...texto..."

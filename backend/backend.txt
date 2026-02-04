@@ -1,0 +1,3 @@
+Nessa pasta vai ficar os arquivos do BackEnd
+
+Padrão para commit do Backend - "[BackEnd] ...texto..."

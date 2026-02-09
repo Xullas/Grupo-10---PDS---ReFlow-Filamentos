@@ -1,0 +1,33 @@
+package br.com.repet3d.backend.service;
+
+import br.com.repet3d.backend.domain.Forms.FornecedorForm;
+import br.com.repet3d.backend.domain.Fornecedor;
+import br.com.repet3d.backend.domain.Views.FornecedorView;
+import br.com.repet3d.backend.repositories.FornecedorRepository;
+import jakarta.transaction.Transactional;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
+@Service
+public class FornecedorService {
+
+    private final FornecedorRepository fornecedorRepository;
+
+    public FornecedorService(FornecedorRepository fornecedorRepository) {
+        this.fornecedorRepository = fornecedorRepository;
+    }
+
+    @Transactional
+    public FornecedorView criarFornecedor(FornecedorForm fornecedorForm) {
+        Fornecedor fornecedor = fornecedorForm.toEntity();
+        fornecedorRepository.save(fornecedor);
+        return FornecedorView.from(fornecedor);
+    }
+
+    public FornecedorView buscarPorId(Long id) {
+        return fornecedorRepository.findById(id)
+                .map(FornecedorView::from)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Fornecedor não encontrado"));
+    }
+}

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title> RE-FLOW Gerenciamento fornecedores</title>
+</head>
+<body>
+    <main>
+        <section>
+            <h2>Cadastrar Fornecedores</h2>
+            <form action = "/fornecedores/cadastrar" method = "POST">
+                <div>
+                    <label for="cadastrar-id">Id</label>
+                    <input type = "text" id=" cadastrar-id" name="id" placeholder="Identificação" maxlength="50" required>
+                </div>
+
+                <div>
+                    <label for="cadastrar-nome">Nome/ Razão social</label>
+                    <input type = "text" id=" cadastrar-nome" name="nome" placeholder="Nome/Razão social" maxlength="255" required>
+                </div>
+
+                <div>
+                    <label for="cadastrar-endereço">Endereço</label>
+                    <input type = "text" id=" cadastrar-endereço" name="endereco" placeholder="Endereço" maxlength="255" required>
+                </div>
+
+                <div>
+                    <label for="cadastrar-contatos">Contatos</label>
+                    <input type = "text" id=" cadastrar-contatos" name="nome" placeholder="Contatos" maxlength="255" required>
+                </div>
+
+                <button type = "submit">Cadastrar</button>
+
+
+
+            </form>
+        </section>
+
+        <section>
+
+            <h2> Editar Fornecedores </h2>
+            <form action = "/fornecedores/editar" method = "POST">
+                <div>
+                    <label for="cadastrar-id">Id</label>
+                    <input type = "text" id=" cadastrar-id" name="id" placeholder="Identificação">
+                </div>
+
+                <div>
+                    <label for="cadastrar-nome">Nome/ Razão social</label>
+                    <input type = "text" id=" cadastrar-nome" name="nome" placeholder="Nome/Razão social">
+                </div>
+
+                <div>
+                    <label for="cadastrar-endereço">Endereço</label>
+                    <input type = "text" id=" cadastrar-endereço" name="endereco" placeholder="Endereço">
+                </div>
+
+                <div>
+                    <label for="cadastrar-contatos">Contatos</label>
+                    <input type = "text" id=" cadastrar-contatos" name="nome" placeholder="Contatos">
+                </div>
+
+                <button type = "submit">Cadastrar</button>
+            </form>
+
+        </section>
+
+        <section>
+            <h2>Excluir Fornecedores</h2>
+            <form action = "/fornecedores/excluir" method = "POST">
+                <div>
+                <label for ="excluir-id">Id</label>
+                    <input type="text" id="excluir-id" name="id" placeholder="Id">
+                </div>
+            </form>
+
+        </section>
+
+    </main>
+</body>
+</html>

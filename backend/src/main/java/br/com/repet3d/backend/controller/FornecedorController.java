@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("fornecedor")
@@ -32,5 +33,11 @@ public class FornecedorController {
     public ResponseEntity<FornecedorView> buscarPorId(@PathVariable Long id) {
         FornecedorView view = fornecedorService.buscarPorId(id);
         return ResponseEntity.ok(view);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<FornecedorView>> listarTodosFornecedores(){
+        List<FornecedorView> lista = fornecedorService.listarTodos();
+        return ResponseEntity.ok(lista);
     }
 }

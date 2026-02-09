@@ -9,6 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class FornecedorService {
 
@@ -29,5 +32,13 @@ public class FornecedorService {
         return fornecedorRepository.findById(id)
                 .map(FornecedorView::from)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Fornecedor não encontrado"));
+    }
+
+
+    public List<FornecedorView> listarTodos() {
+        return fornecedorRepository.findAll()
+                .stream()
+                .map(FornecedorView::from)
+                .collect(Collectors.toList());
     }
 }

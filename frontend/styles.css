@@ -9,64 +9,20 @@
 
 /* Configurações de Fundo e Layout */
 body {
-    background-color: #DEF9AD; 
+   
+    background-color: #E1FFA9;
     background-image: url('./assets/bg-rf-full.png');
     background-repeat: no-repeat;
-    background-size: 100% ;
+    background-size: cover;        
+    background-attachment: fixed;  
+    background-position: center;   
     margin: 0;
     padding: 20px;
+    min-height: 100vh;             
     display: flex;
-    justify-content: center;
-    position: relative;
-    overflow-x: hidden ;
-}
-
-/*body::before {
-    content: "";
-    position: fixed; 
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 500px; 
-    background: url('bg-rf.png') no-repeat top left;
-    background-size: contain;
-    z-index: -1;
-}*/
-
-/* Container principal para não atrapalhar o conteúdo */
-body {
-    background-color: #E1FFA9;
-    margin: 0;
-    position: relative;
-    overflow-x: hidden; /* Evita barras de rolagem estranhas pelas linhas */
-}
-
-/* Linhas do Topo */
-body::before {
-    content: "";
-    position: fixed; /* Fica parado enquanto você rola */
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 300px; /* Ajuste conforme o tamanho da sua imagem */
-    background: url('bg-rf.png') no-repeat top left;
-    background-size: contain;
-    z-index: -1; 
-    
-}
-
-/* Linhas de Baixo */
-body::after {
-    content: "";
-    position: fixed;
-    bottom: 0;
-    right: 0;
-    width: 100%;
-    height: 300px;
-    background: url('bg-rf.png') no-repeat bottom right;
-    background-size: contain;
-    z-index: -1;
-    transform: rotate(180deg); /* Gira a imagem 180 graus como você queria */
+    justify-content: center;       
+    overflow-x: hidden;            
+    position: relative;           
 }
 
 

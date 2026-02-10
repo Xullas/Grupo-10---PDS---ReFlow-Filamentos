@@ -41,6 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <td>${f.id}</td>
                         <td>${f.nome}</td>
                         <td>${f.cnpj}</td>
+                        <td>${f.endereco}</td>
                         <td>${f.contato || ''}</td>
                         <td>${f.obs || ''}</td>
                         <td><button onclick="prepararEdicao(${f.id})">Editar</button></td>
@@ -62,6 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (response.ok) {
                     const dados = await response.json();
                     document.getElementById('editar-nome').value = dados.nome;
+                    document.getElementById('editar-cnpj').value = dados.endereco;
                     document.getElementById('editar-endereço').value = dados.endereco;
                     document.getElementById('editar-contatos').value = dados.contato;
                     document.getElementById('editar-observacao').value = dados.obs;

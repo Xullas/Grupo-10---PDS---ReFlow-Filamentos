@@ -90,6 +90,24 @@ input {
     background-color: #144148;
 }
 
+.btn-acao-edit{
+    display: block;
+    width: 100%;
+    margin: 20px auto 0;
+    padding: 12px;
+    border: none;
+    border-radius: 25px;
+    background-color: #1A535C; 
+    color: #E1FFA9;
+    font-weight: bold;
+    cursor: pointer;
+    align-self:center;
+}
+
+.btn-acao-edit:hover{
+    background-color: #144148;
+}
+
 .secao-lista-card {
     display: flex;
     flex-direction: column;

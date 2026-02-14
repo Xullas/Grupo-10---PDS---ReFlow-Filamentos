@@ -1,0 +1,92 @@
+{
+  "fornecedor": [
+    {
+      "id": "1",
+      "nome": "Filamentos Tech LTDA",
+      "cnpj": "12.345.678/0001-99",
+      "endereco": "Rua das Indústrias, 101, Distrito Industrial",
+      "contato": "(11) 98765-4321 - falar com Ricardo",
+      "obs": "Principal fornecedor de PETG e ABS para o projeto RePET-3d."
+    },
+    {
+      "id": "2",
+      "nome": "Polímeros Industriais S.A.",
+      "cnpj": "11.222.333/0001-01",
+      "endereco": "Rua Granulado Plástico, 500, Joinville - SC",
+      "contato": "(47) 3025-1122 - Eng. Cláudio",
+      "obs": "Fornecedor principal de pellets virgens de PLA e ABS."
+    },
+    {
+      "id": "3",
+      "nome": "Corantes & Pigmentos Master",
+      "cnpj": "22.333.444/0001-02",
+      "endereco": "Av. das Cores, 12, Diadema - SP",
+      "contato": "comercial@masterpigmentos.com.br",
+      "obs": "Fornece masterbatch para coloração de filamentos (Neon e Metálicos)."
+    },
+    {
+      "id": "4",
+      "nome": "BioTech Aditivos Químicos",
+      "cnpj": "33.444.555/0001-03",
+      "endereco": "Rodovia da Inovação, Km 45, Curitiba - PR",
+      "contato": "(41) 98877-6655",
+      "obs": "Fornecedor de aditivos para resistência térmica e impacto."
+    },
+    {
+      "id": "5",
+      "nome": "Carretéis EcoBrasil LTDA",
+      "cnpj": "44.555.666/0001-04",
+      "endereco": "Travessa da Reciclagem, 88, Extrema - MG",
+      "contato": "vendas@ecobrasil.com",
+      "obs": "Fornece carretéis de papelão reciclado e plástico injetado"
+    },
+    {
+      "id": "6",
+      "nome": "Cadastrando Valores",
+      "cnpj": "",
+      "endereco": "",
+      "contato": "",
+      "obs": ""
+    },
+    {
+      "id": "7",
+      "nome": "Cadastrando Valores Errado",
+      "cnpj": "1284",
+      "endereco": "",
+      "contato": "",
+      "obs": ""
+    },
+    {
+      "id": "cb2d",
+      "cnpj": "524666666666",
+      "nome": "Joao",
+      "endereco": "",
+      "contato": "",
+      "obs": ""
+    },
+    {
+      "id": "243f",
+      "cnpj": "524666666666",
+      "nome": "caneca",
+      "endereco": "rua, 123",
+      "contato": "(34) 988347777",
+      "obs": "fabrica caixas"
+    },
+    {
+      "id": "a2d0",
+      "cnpj": "524666666666",
+      "nome": "caneca",
+      "endereco": "rua, 123",
+      "contato": "(34) 988347777",
+      "obs": "fabrica caixas"
+    },
+    {
+      "id": "ea30",
+      "cnpj": "25275275272752",
+      "nome": "Joao Paulo Santos",
+      "endereco": "rua, 123",
+      "contato": "34988347777",
+      "obs": "fabrica caixas"
+    }
+  ]
+}

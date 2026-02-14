@@ -50,7 +50,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     const formCadastrar = document.getElementById('form-cadastrar');
-    const formEditar = document.getElementById('form-editar');
     const btnListar = document.getElementById('btn-listar');
     const corpoTabela = document.getElementById('tabela-fornecedores');
     const campoIdEditar = document.getElementById('editar-id');
@@ -103,7 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <td>${f.cnpj}</td>
                         <td>${f.endereco}</td>
                         <td>${f.contato || ''}</td>
-                        <td>${f.obs || ''}</td>
+                        <td>${f.observacao || ''}</td>
                         <td><button class="btn-acao-edit" onclick="prepararEdicao(${f.id})">Editar</button></td>
                     `;
                     corpoTabela.appendChild(linha);
@@ -113,21 +112,21 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Erro ao listar:', error);
         }
     }
-
     if (campoIdEditar) {
         campoIdEditar.addEventListener('blur', async () => {
+
             const id = campoIdEditar.value;
             if (!id) return;
             try {
                 const response = await fetch(`http://localhost:8081/fornecedor/${id}`);
                 if (response.ok) {
                     const dados = await response.json();
-                    document.getElementById('editar-nome').value = dados.nome;
-                    //document.getElementById('editar-cnpj').value = dados.cnpj;
-                    document.getElementById('editar-endereço').value = dados.endereco;
-                    //document.getElementById('editar-contatos').value = dados.contato;
-                    document.getElementById('editar-observacao').value = dados.obs;
                     document.getElementById('editar-cnpj').value = aplicarMascaras.cnpj(dados.cnpj);
+                    document.getElementById('editar-nome').value = dados.nome;
+                    document.getElementById('editar-endereco').value = dados.endereco;
+                    document.getElementById('editar-contatos').value = dados.contato;
+                    document.getElementById('editar-observacao').value = dados.observacao;
+
                     if (dados.contato) {
                         document.getElementById('editar-contatos').value = aplicarMascaras.telefone(dados.contato);
                     }
@@ -137,6 +136,58 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+
+    const formEditar = document.querySelector('#form-editar');
+
+    if (formEditar) {
+        
+        console.log("Formulário de edição encontrado!");
+       
+        formEditar.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const id = document.getElementById('editar-id').value;
+
+            if (!id) {
+                alert("Por favor, selecione um fornecedor na lista primeiro.");
+                return;
+            }
+
+            const dadosAtualizados = {
+                cnpj: document.getElementById('editar-cnpj').value,
+                nome: document.getElementById('editar-nome').value,
+                endereco: document.getElementById('editar-endereco').value,
+                contato: document.getElementById('editar-contatos').value,
+                observacao: document.getElementById('editar-observacao').value
+            };
+
+try {
+            const url = `http://localhost:8081/fornecedor/${id}`;
+            console.log("Enviando para:", url);
+
+            const response = await fetch(url, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(dadosAtualizados)
+            });
+
+                if (response.ok) {
+                    alert('Fornecedor atualizado com sucesso!');
+                    
+                    await listarTodos();
+                    formEditar.reset();
+                
+                } else {
+                    alert('Erro ao atualizar fornecedor.');
+                }
+            } catch (error) {
+                console.error('Erro na requisição:', error);
+            alert('Erro de conexão: Verifique se o backend está rodando na porta 8081');
+            }
+        });
+    }
+
 
     if (btnListar) btnListar.addEventListener('click', listarTodos);
     listarTodos();
@@ -150,3 +201,4 @@ window.prepararEdicao = function (id) {
         campoIdEditar.scrollIntoView();
     }
 };
+

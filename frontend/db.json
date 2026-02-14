@@ -1,20 +1,20 @@
 {
   "fornecedor": [
     {
-      "id": "1",
+      "cnpj": "12.345.678/0022-22",
       "nome": "Filamentos Tech LTDA",
-      "cnpj": "12.345.678/0001-99",
       "endereco": "Rua das Indústrias, 101, Distrito Industrial",
-      "contato": "(11) 98765-4321 - falar com Ricardo",
-      "obs": "Principal fornecedor de PETG e ABS para o projeto RePET-3d."
+      "contato": "(11) 98765-7777",
+      "observacao": "fabrica caixas",
+      "id": "1"
     },
     {
-      "id": "2",
-      "nome": "Polímeros Industriais S.A.",
       "cnpj": "11.222.333/0001-01",
-      "endereco": "Rua Granulado Plástico, 500, Joinville - SC",
-      "contato": "(47) 3025-1122 - Eng. Cláudio",
-      "obs": "Fornecedor principal de pellets virgens de PLA e ABS."
+      "nome": "Polímeros Industriais S.A.",
+      "endereco": "Rua Granulado Plástico, 1000, Joinville - SC",
+      "contato": "(47) 30251-122",
+      "observacao": "Fornecedor principal  ",
+      "id": "2"
     },
     {
       "id": "3",
@@ -84,6 +84,30 @@
       "id": "ea30",
       "cnpj": "25275275272752",
       "nome": "Joao Paulo Santos",
+      "endereco": "rua, 123",
+      "contato": "34988347777",
+      "obs": "fabrica caixas"
+    },
+    {
+      "id": "94f0",
+      "cnpj": "21212121212121",
+      "nome": "Logitech",
+      "endereco": "Rua das Industrias 102, DistridoFederal",
+      "contato": "34988347777",
+      "obs": "fabrica caixas"
+    },
+    {
+      "id": "805d",
+      "cnpj": "21212121212121",
+      "nome": "Logitech",
+      "endereco": "Rua das Industrias 102, DistridoFederal",
+      "contato": "34988347777",
+      "obs": "fabrica caixas"
+    },
+    {
+      "id": "662e",
+      "cnpj": "12345678900000",
+      "nome": "Caneca Stormtrooper",
       "endereco": "rua, 123",
       "contato": "34988347777",
       "obs": "fabrica caixas"

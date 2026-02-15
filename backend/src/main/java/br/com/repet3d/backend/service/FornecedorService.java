@@ -41,4 +41,22 @@ public class FornecedorService {
                 .map(FornecedorView::from)
                 .collect(Collectors.toList());
     }
+
+    @Transactional
+    public FornecedorView atualizarFornecedor(Long id, FornecedorForm fornecedorForm) {
+        Fornecedor fornecedor = fornecedorForm.toEntity();
+
+        Fornecedor fornecedorAtualizado = Fornecedor.builder()
+                .id(id)
+                .nome(fornecedor.getNome())
+                .cnpj(fornecedor.getCnpj())
+                .endereco(fornecedor.getEndereco())
+                .contato(fornecedor.getContato())
+                .obs(fornecedor.getObs())
+                .build();
+
+        Fornecedor salvo = fornecedorRepository.save(fornecedorAtualizado);
+
+        return FornecedorView.from(salvo);
+    }
 }

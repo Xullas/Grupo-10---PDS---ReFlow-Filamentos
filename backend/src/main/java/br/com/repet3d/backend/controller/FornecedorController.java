@@ -40,4 +40,11 @@ public class FornecedorController {
         List<FornecedorView> lista = fornecedorService.listarTodos();
         return ResponseEntity.ok(lista);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<FornecedorView> atualizarFornecedor(@PathVariable Long id,
+                                                              @RequestBody @Valid FornecedorForm fornecedorForm) {
+        FornecedorView view = fornecedorService.atualizarFornecedor(id, fornecedorForm);
+        return ResponseEntity.ok(view);
+    }
 }

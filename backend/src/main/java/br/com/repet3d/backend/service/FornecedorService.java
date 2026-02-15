@@ -59,4 +59,13 @@ public class FornecedorService {
 
         return FornecedorView.from(salvo);
     }
+
+    @Transactional
+    public void deletarFornecedor(Long id) {
+        if (!fornecedorRepository.existsById(id)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Fornecedor não encontrado");
+        }
+
+        fornecedorRepository.deleteById(id);
+    }
 }

@@ -47,4 +47,10 @@ public class FornecedorController {
         FornecedorView view = fornecedorService.atualizarFornecedor(id, fornecedorForm);
         return ResponseEntity.ok(view);
     }
+
+    @DeleteMapping("/{id}")
+    public  ResponseEntity<Void> removerFornecedor(@PathVariable Long id) {
+        fornecedorService.deletarFornecedor(id);
+        return ResponseEntity.noContent().build();
+    }
 }

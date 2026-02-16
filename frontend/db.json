@@ -1,46 +1,6 @@
 {
   "fornecedor": [
     {
-      "cnpj": "12.345.678/0022-22",
-      "nome": "Filamentos Tech LTDA",
-      "endereco": "Rua das Indústrias, 101, Distrito Industrial",
-      "contato": "(11) 98765-7777",
-      "observacao": "fabrica caixas",
-      "id": "1"
-    },
-    {
-      "cnpj": "11.222.333/0001-01",
-      "nome": "Polímeros Industriais S.A.",
-      "endereco": "Rua Granulado Plástico, 1000, Joinville - SC",
-      "contato": "(47) 30251-122",
-      "observacao": "Fornecedor principal  ",
-      "id": "2"
-    },
-    {
-      "id": "3",
-      "nome": "Corantes & Pigmentos Master",
-      "cnpj": "22.333.444/0001-02",
-      "endereco": "Av. das Cores, 12, Diadema - SP",
-      "contato": "comercial@masterpigmentos.com.br",
-      "obs": "Fornece masterbatch para coloração de filamentos (Neon e Metálicos)."
-    },
-    {
-      "id": "4",
-      "nome": "BioTech Aditivos Químicos",
-      "cnpj": "33.444.555/0001-03",
-      "endereco": "Rodovia da Inovação, Km 45, Curitiba - PR",
-      "contato": "(41) 98877-6655",
-      "obs": "Fornecedor de aditivos para resistência térmica e impacto."
-    },
-    {
-      "id": "5",
-      "nome": "Carretéis EcoBrasil LTDA",
-      "cnpj": "44.555.666/0001-04",
-      "endereco": "Travessa da Reciclagem, 88, Extrema - MG",
-      "contato": "vendas@ecobrasil.com",
-      "obs": "Fornece carretéis de papelão reciclado e plástico injetado"
-    },
-    {
       "id": "6",
       "nome": "Cadastrando Valores",
       "cnpj": "",
@@ -57,60 +17,12 @@
       "obs": ""
     },
     {
-      "id": "cb2d",
-      "cnpj": "524666666666",
-      "nome": "Joao",
-      "endereco": "",
-      "contato": "",
-      "obs": ""
-    },
-    {
-      "id": "243f",
-      "cnpj": "524666666666",
-      "nome": "caneca",
-      "endereco": "rua, 123",
-      "contato": "(34) 988347777",
-      "obs": "fabrica caixas"
-    },
-    {
-      "id": "a2d0",
-      "cnpj": "524666666666",
-      "nome": "caneca",
-      "endereco": "rua, 123",
-      "contato": "(34) 988347777",
-      "obs": "fabrica caixas"
-    },
-    {
-      "id": "ea30",
-      "cnpj": "25275275272752",
-      "nome": "Joao Paulo Santos",
-      "endereco": "rua, 123",
+      "id": "b380",
+      "cnpj": "12345678000199",
+      "nome": "Filamentos Tech LTDA",
+      "endereco": "Rua das Indústrias, 101, Distrito Industrial",
       "contato": "34988347777",
-      "obs": "fabrica caixas"
-    },
-    {
-      "id": "94f0",
-      "cnpj": "21212121212121",
-      "nome": "Logitech",
-      "endereco": "Rua das Industrias 102, DistridoFederal",
-      "contato": "34988347777",
-      "obs": "fabrica caixas"
-    },
-    {
-      "id": "805d",
-      "cnpj": "21212121212121",
-      "nome": "Logitech",
-      "endereco": "Rua das Industrias 102, DistridoFederal",
-      "contato": "34988347777",
-      "obs": "fabrica caixas"
-    },
-    {
-      "id": "662e",
-      "cnpj": "12345678900000",
-      "nome": "Caneca Stormtrooper",
-      "endereco": "rua, 123",
-      "contato": "34988347777",
-      "obs": "fabrica caixas"
+      "obs": "Principal fornecedor de PETG e ABS para o projeto RePET-3d."
     }
   ]
 }

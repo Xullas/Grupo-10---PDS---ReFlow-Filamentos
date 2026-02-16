@@ -5,9 +5,11 @@
     <meta charset="UTF-8">
     <title> RE-FLOW Gerenciamento fornecedores</title>
     <link rel="stylesheet" href="./styles.css">
+    
 </head>
 
 <body>
+    <img src="./assets/logoRF.png" alt="Logo RE-FLOW" class="logo">
     <main>
         <div class="container-cards">
             <section class="card">
@@ -85,8 +87,7 @@
                         <input type="text" id="editar-observacao" name="obs" placeholder="Observação" maxlength="255">
                     </div>
 
-                    <button type="submit" class="btn-acao" 
-                        title="Função de edição será desenvolviva">Editar</button>
+                    <button type="submit" class="btn-acao" >Editar</button>
                 </form>
 
             </section>
@@ -105,31 +106,15 @@
                         <th>Endereço</th>
                         <th>Contato</th>
                         <th>Obs</th>
-                        <th>Ações</th>
+                        <th></th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody id="tabela-fornecedores">
                 </tbody>
             </table>
 
-           <button id="btn-atualizar">Atualizar Lista</button>
-
         </section>
-
-
-
-        <section class="card secao-excluir-card">
-            <h2>Excluir Fornecedores</h2>
-            <form action="/fornecedores/excluir" method="POST">
-                <div class="input-group">
-                    <label for="excluir-id">Id</label>
-                    <input type="text" id="excluir-id" name="id" placeholder="Id">
-                </div>
-                <button type="submit" class="btn-acao">Excluir</button>
-            </form>
-
-        </section>
-
     </main>
     <script src="fornecedores.js"></script>
 </body>

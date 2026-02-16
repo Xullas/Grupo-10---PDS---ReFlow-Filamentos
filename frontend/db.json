@@ -1,28 +1,12 @@
 {
   "fornecedor": [
     {
-      "id": "6",
-      "nome": "Cadastrando Valores",
-      "cnpj": "",
-      "endereco": "",
-      "contato": "",
-      "obs": ""
-    },
-    {
-      "id": "7",
-      "nome": "Cadastrando Valores Errado",
-      "cnpj": "1284",
-      "endereco": "",
-      "contato": "",
-      "obs": ""
-    },
-    {
-      "id": "b380",
-      "cnpj": "12345678000199",
-      "nome": "Filamentos Tech LTDA",
-      "endereco": "Rua das Indústrias, 101, Distrito Industrial",
-      "contato": "34988347777",
-      "obs": "Principal fornecedor de PETG e ABS para o projeto RePET-3d."
+      "id": "51a9",
+      "cnpj": "48494984984984",
+      "nome": "Filamentos Tech LTDA teste",
+      "endereco": "rua, 123 teste",
+      "contato": "98798798798",
+      "obs": "teste"
     }
   ]
 }

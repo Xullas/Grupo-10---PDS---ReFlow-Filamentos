@@ -1,11 +1,110 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>RE-FLOW Gerenciamento fornecedores</title>
+    <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+    <img src="./assets/logoRF.png" alt="Logo RE-FLOW" class="logo">
+    <main>
+        <div class="container-cards">
+            <section class="card">
+                <h2>Cadastrar Fornecedores</h2>
+                <form id="form-cadastrar">
+                    <div class="input-group">
+                        <label for="cadastrar-cnpj">CNPJ</label>
+                        <input type="text" id="cadastrar-cnpj" name="cnpj" placeholder="00.000.000/000-00" maxlength="18" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="cadastrar-nome">Nome/ Razão social</label>
+                        <input type="text" id="cadastrar-nome" name="nome" placeholder="Nome/Razão social" maxlength="255" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="cadastrar-endereço">Endereço</label>
+                        <input type="text" id="cadastrar-endereço" name="endereco" placeholder="Endereço" maxlength="255">
+                    </div>
+                    <div class="input-group">
+                        <label for="cadastrar-contatos">Contatos</label>
+                        <input type="text" id="cadastrar-contatos" name="contato" placeholder="(00) 00000-0000" maxlength="255">
+                    </div>
+                    <div class="input-group">
+                        <label for="cadastrar-observacao">Observação</label>
+                        <input type="text" id="cadastrar-observacao" name="obs" placeholder="Observação" maxlength="255">
+                    </div>
+                    <button type="submit" class="btn-acao">Cadastrar</button>
+                </form>
+            </section>
+
+            <section class="card">
+                <h2>Editar Fornecedores</h2>
+                <form id="form-editar">
+                    <input type="hidden" id="editar-id" name="id">
+                    <div class="input-group">
+                        <label for="editar-cnpj">CNPJ</label>
+                        <input type="text" id="editar-cnpj" name="cnpj" placeholder="00.000.000/000-00" maxlength="50" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="editar-nome">Nome/ Razão social</label>
+                        <input type="text" id="editar-nome" name="nome" placeholder="Nome/Razão social" maxlength="255">
+                    </div>
+                    <div class="input-group">
+                        <label for="editar-endereço">Endereço</label>
+                        <input type="text" id="editar-endereco" name="endereco" placeholder="Endereço" maxlength="255">
+                    </div>
+                    <div class="input-group">
+                        <label for="editar-contatos">Contatos</label>
+                        <input type="text" id="editar-contatos" name="contatos" placeholder="Contatos" maxlength="255">
+                    </div>
+                    <div class="input-group">
+                        <label for="editar-observacao">Observação</label>
+                        <input type="text" id="editar-observacao" name="obs" placeholder="Observação" maxlength="255">
+                    </div>
+                    <button type="submit" class="btn-acao">Salvar Alterações</button>
+                </form>
+            </section>
+        </div>
+
+        <section class="card secao-lista-card">
+            <h2>Lista de Fornecedores</h2>
+            <table class="tabela-container">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>CNPJ</th>
+                        <th>Endereço</th>
+                        <th>Contato</th>
+                        <th>Obs</th>
+                        <th style="width: 180px;">Ações</th> </tr>
+                    </tr>
+                </thead>
+                <tbody id="tabela-fornecedores"></tbody>
+            </table>
+        </section>
+    </main>
+
+    <div id="modalAlerta" class="modal-overlay">
+        <div class="modal-card">
+            <h3 id="modalTitulo">Aviso</h3>
+            <p id="modalMensagem">Mensagem aqui...</p>
+            <button id="btnFecharModal" class="btn-acao">Entendi</button>
+        </div>
+    </div>
+
+    <script src="fornecedores.js"></script>
+</body>
+</html>
+
+
+<!--<!DOCTYPE html>
+<html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
     <title> RE-FLOW Gerenciamento fornecedores</title>
     <link rel="stylesheet" href="./styles.css">
-    
+
 </head>
 
 <body>
@@ -14,12 +113,13 @@
         <div class="container-cards">
             <section class="card">
                 <h2>Cadastrar Fornecedores</h2>
-                
+
                 <form id="form-cadastrar">
 
                     <div class="input-group">
                         <label for="cadastrar-cnpj">CNPJ</label>
-                        <input type="text" id="cadastrar-cnpj" name="cnpj" placeholder="00.000.000/000-00" maxlength="18" required
+                        <input type="text" id="cadastrar-cnpj" name="cnpj" placeholder="00.000.000/000-00"
+                            maxlength="18" required
                             oninvalid="this.setCustomValidity('O CNPJ do fornecedor é obrigatório!')"
                             oninput="this.setCustomValidity('')">
                     </div>
@@ -64,7 +164,8 @@
 
                     <div class="input-group">
                         <label for="editar-cnpj">CNPJ</label>
-                        <input type="text" id="editar-cnpj" name="cnpj" placeholder="00.000.000/000-00" maxlength="50" required>
+                        <input type="text" id="editar-cnpj" name="cnpj" placeholder="00.000.000/000-00" maxlength="50"
+                            required>
                     </div>
 
                     <div class="input-group">
@@ -87,7 +188,7 @@
                         <input type="text" id="editar-observacao" name="obs" placeholder="Observação" maxlength="255">
                     </div>
 
-                    <button type="submit" class="btn-acao" >Editar</button>
+                    <button type="submit" class="btn-acao">Editar</button>
                 </form>
 
             </section>
@@ -96,7 +197,7 @@
 
         <section class="card secao-lista-card">
             <h2>Lista de Fornecedores</h2>
-         
+
             <table class="tabela-container">
                 <thead>
                     <tr>
@@ -116,7 +217,18 @@
 
         </section>
     </main>
+
+    <button id="abrirModal">Clique para Testar</button>
+
+    <div id="modalAlerta" class="modal-overlay">
+        <div class="modal-card">
+            <p id="modalMensagem">Esta é a mensagem do alerta.</p>
+            <button id="btnFecharModal" class="modal-button">Entendi</button>
+        </div>
+    </div>
+
     <script src="fornecedores.js"></script>
 </body>
 
-</html>
+</html-->
+

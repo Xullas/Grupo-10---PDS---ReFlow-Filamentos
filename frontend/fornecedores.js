@@ -13,32 +13,32 @@ function fecharModal() {
     document.getElementById('modalAlerta').classList.remove('ativo');
 }
 
+const aplicarMascaras = {
+    cnpj(value) {
+        return value
+            .replace(/\D/g, '')
+            .replace(/^(\d{2})(\d)/, '$1.$2')
+            .replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3')
+            .replace(/\.(\d{3})(\d)/, '.$1/$2')
+            .replace(/(\d{4})(\d)/, '$1-$2')
+            .replace(/(-\d{2})\d+?$/, '$1');
+    },
+    telefone(value) {
+        return value
+            .replace(/\D/g, '')
+            .replace(/^(\d{2})(\d)/, '($1) $2')
+            .replace(/(\d{5})(\d)/, '$1-$2')
+            .replace(/(-\d{4})\d+?$/, '$1');
+    }
+};
+
 document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById('btnFecharModal').addEventListener('click', fecharModal);
 
     const inputCnpjCadastrar = document.querySelector('input[name="cnpj"]');
     const inputCnpjEditar = document.getElementById('editar-cnpj');
-    const inputContatoEditar = document.getElementById('editar-contatos');
-
-    const aplicarMascaras = {
-        cnpj(value) {
-            return value
-                .replace(/\D/g, '')
-                .replace(/^(\d{2})(\d)/, '$1.$2')
-                .replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3')
-                .replace(/\.(\d{3})(\d)/, '.$1/$2')
-                .replace(/(\d{4})(\d)/, '$1-$2')
-                .replace(/(-\d{2})\d+?$/, '$1');
-        },
-        telefone(value) {
-            return value
-                .replace(/\D/g, '')
-                .replace(/^(\d{2})(\d)/, '($1) $2')
-                .replace(/(\d{5})(\d)/, '$1-$2')
-                .replace(/(-\d{4})\d+?$/, '$1');
-        }
-    };
+    const inputContatoEditar = document.getElementById('editar-contato');
 
     // Aplicar Máscaras nos Inputs
     [inputCnpjCadastrar, inputCnpjEditar].forEach(input => {
@@ -55,7 +55,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const formCadastrar = document.getElementById('form-cadastrar');
-    const corpoTabela = document.getElementById('tabela-fornecedores');
     const campoIdEditar = document.getElementById('editar-id');
 
     // CADASTRO
@@ -83,43 +82,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (response.ok) {
                     dispararAlerta("Sucesso", "Fornecedor cadastrado com sucesso!");
                     formCadastrar.reset();
-                    listarTodos();
+                    await listarTodos();
                 }
             } catch (error) {
                 dispararAlerta("Erro de Conexão", "Não foi possível conectar ao servidor.");
             }
         });
-    }
-
-    // LISTAGEM
-    async function listarTodos() {
-        try {
-            const response = await fetch('http://localhost:8081/fornecedor');
-            if (response.ok) {
-                const fornecedores = await response.json();
-                corpoTabela.innerHTML = '';
-                fornecedores.forEach(f => {
-                    const linha = document.createElement('tr');
-                    linha.innerHTML = `
-                        <td>${f.id}</td>
-                        <td>${f.nome}</td>
-                        <td>${f.cnpj}</td>
-                        <td>${f.endereco}</td>
-                        <td>${f.contato || ''}</td>
-                        <td>${f.observacao || ''}</td>
-                        <td>
-                            <div style="display: flex; gap: 5px;">
-                                <button class="btn-acao-edit" onclick="prepararEdicao(${f.id})">Editar</button>
-                                <button class="btn-acao-excluir" onclick="excluirFornecedor(${f.id})">Excluir</button>
-                            </div>
-                        </td>
-                    `;
-                    corpoTabela.appendChild(linha);
-                });
-            }
-        } catch (error) {
-            console.error('Erro ao listar:', error);
-        }
     }
 
     // BUSCA PARA EDIÇÃO
@@ -134,8 +102,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     document.getElementById('editar-cnpj').value = aplicarMascaras.cnpj(dados.cnpj);
                     document.getElementById('editar-nome').value = dados.nome;
                     document.getElementById('editar-endereco').value = dados.endereco;
-                    document.getElementById('editar-contatos').value = dados.contato ? aplicarMascaras.telefone(dados.contato) : '';
-                    document.getElementById('editar-observacao').value = dados.observacao || '';
+                    document.getElementById('editar-contato').value = dados.contato ? aplicarMascaras.telefone(dados.contato) : '';
+                    document.getElementById('editar-observacao').value = dados.obs || '';
                 }
             } catch (error) {
                 console.error('Erro ao buscar:', error);
@@ -159,8 +127,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 cnpj: document.getElementById('editar-cnpj').value.replace(/\D/g, ''),
                 nome: document.getElementById('editar-nome').value,
                 endereco: document.getElementById('editar-endereco').value,
-                contato: document.getElementById('editar-contatos').value.replace(/\D/g, ''),
-                observacao: document.getElementById('editar-observacao').value
+                contato: document.getElementById('editar-contato').value.replace(/\D/g, ''),
+                obs: document.getElementById('editar-observacao').value
             };
 
             try {
@@ -183,8 +151,39 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    listarTodos();
+    listarTodos().catch(err => console.error("Erro no carregamento inicial:", err));
 });
+
+// LISTAGEM
+window.listarTodos = async function() {
+    const corpoTabela = document.getElementById('tabela-fornecedores');
+    try {
+        const response = await fetch('http://localhost:8081/fornecedor');
+        if (response.ok) {
+            const fornecedores = await response.json();
+            corpoTabela.innerHTML = '';
+            fornecedores.forEach(f => {
+                const linha = document.createElement('tr');
+                linha.innerHTML = `
+                        <td>${f.nome}</td>
+                        <td>${aplicarMascaras.cnpj(f.cnpj)}</td>
+                        <td>${f.endereco}</td>
+                        <td>${aplicarMascaras.telefone(f.contato) || ''}</td>
+                        <td>${f.obs || ''}</td>
+                        <td>
+                            <div style="display: flex; gap: 5px;">
+                                <button class="btn-acao-edit" onclick="prepararEdicao(${f.id})">Editar</button>
+                                <button class="btn-acao-excluir" onclick="excluirFornecedor(${f.id})">Excluir</button>
+                            </div>
+                        </td>
+                    `;
+                corpoTabela.appendChild(linha);
+            });
+        }
+    } catch (error) {
+        console.error('Erro ao listar:', error);
+    }
+}
 
 window.prepararEdicao = function (id) {
     const campoIdEditar = document.getElementById('editar-id');
@@ -196,6 +195,7 @@ window.prepararEdicao = function (id) {
 };
 
 window.excluirFornecedor = async function (id) {
+
     try {
         const response = await fetch(`http://localhost:8081/fornecedor/${id}`, {
             method: 'DELETE'
@@ -204,21 +204,13 @@ window.excluirFornecedor = async function (id) {
         if (response.ok) {
 
             dispararAlerta("Excluído", "O fornecedor foi removido do sistema RE-FLOW.");
-            listarTodos();
 
-            setTimeout(() => {
-                location.reload();
-            }, 2400);
+            await listarTodos();
 
         } else {
             dispararAlerta("Erro", "Não foi possível excluir. O servidor retornou um erro.");
         }
     } catch (error) {
-        console.error('Erro ao excluir:', error);
         dispararAlerta("Erro de Conexão", "Verifique se o seu banco de dados (JSON Server) está rodando.");
     }
 };
-
-
-
-

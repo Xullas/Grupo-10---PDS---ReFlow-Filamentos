@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>RE-FLOW Gerenciamento de produtos</title>
+    <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+    <img src="./assets/logoRF.png" alt="Logo RE-FLOW" class="logo">
+    <main>
+        <nav class="sidebar">
+            <ul>
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="Produtos.html">Produtos</a></li>
+                <li><a href="Dados.html">Fornecedores</a></li>
+            </ul>
+        </nav>
+        <div class="container-cards">
+            <section class="card">
+                <h2>Cadastrar Produtos</h2>
+                <form id="form-cadastrar">
+                    <div class="input-group">
+                        <label for="cadastrar-material">Material</label>
+                        <input type="text" id="cadastrar-material" name="material" placeholder="Tipo de material" maxlength="50" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="cadastrar-cor">Cor</label>
+                        <input type="text" id="cadastrar-cor" name="cor" placeholder="Cor" maxlength="20" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="cadastrar-diametro">Diametro</label>
+                        <input type="text" id="cadastrar-diametro" name="diametro" placeholder="2,55 mm" maxlength="10" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="cadastrar-peso">Peso</label>
+                        <input type="text" id="cadastrar-peso" name="peso" placeholder="1,00 kg" maxlength="10" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="cadastrar-origem">Origem reciclada</label>
+                        <input type="text" id="cadastrar-origem" name="origem" placeholder="Origem reciclada" maxlength="50">
+                    </div>
+                    <button type="submit" class="btn-acao">Cadastrar</button>
+                </form>
+            </section>
+
+            <section class="card">
+                <h2>Editar Produtos</h2>
+                <form id="form-editar">
+                    <input type="hidden" id="editar-id" name="id">
+                    <div class="input-group">
+                        <label for="editar-material">Material</label>
+                        <input type="text" id="editar-material" name="material" placeholder="Tipo de material" maxlength="50" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="editar-cor">Cor</label>
+                        <input type="text" id="editar-cor" name="cor" placeholder="Cor" maxlength="20" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="editar-peso">Diâmetro</label>
+                        <input type="text" id="editar-diametro" name="diametro-editar" placeholder="2,55mm" maxlength="10" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="editar-peso">Peso</label>
+                        <input type="text" id="editar-peso" name="peso-editar" placeholder="1,00 kg" maxlength="10" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="editar-observacao">Origem reciclada</label>
+                        <input type="text" id="editar-origem" name="origem" placeholder="Origem reciclada" maxlength="50" required>
+                    </div>
+                    <button type="submit" class="btn-acao">Salvar Alterações</button>
+                </form>
+            </section>
+        </div>
+
+        <section class="card secao-lista-card">
+            <h2>Lista de Produtos</h2>
+            <table class="tabela-container">
+                <thead>
+                    <tr>
+                        <th>Material</th>
+                        <th>Cor</th>
+                        <th>Diâmetro</th>
+                        <th>Peso</th>
+                        <th>Origem reciclada</th>
+                        <th style="width: 180px;">Ações</th> </tr>
+                    </tr>
+                </thead>
+                <tbody id="tabela-produtos"></tbody>
+            </table>
+        </section>
+    </main>
+
+    <div id="modalAlerta" class="modal-overlay">
+        <div class="modal-card">
+            <h3 id="modalTitulo">Aviso</h3>
+            <p id="modalMensagem">Mensagem aqui...</p>
+            <button id="btnFecharModal" class="btn-acao">Entendi</button>
+        </div>
+    </div>
+
+     <footer class="footer">
+        <p>&copy; 2026 Re-Flow - Tecnologia em Reciclagem</p>
+    </footer>
+
+    <script src="produtos.js"></script>
+</body>
+</html>
+
+

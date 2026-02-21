@@ -21,8 +21,12 @@ body {
     display: flex;
     justify-content: center;       
     overflow-x: hidden;            
-    position: relative;           
+    position: relative;   
+    height: 100%;
+    display: flex;
+    flex-direction: column;        
 }
+
 
 .logo{
     position: fixed; 
@@ -34,6 +38,48 @@ body {
     display: block;    
     pointer-events: none;    
 }
+
+
+.sidebar{
+    
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 250px;
+    height: 100vh;
+    background-color: #1A535C;
+    opacity: 80%;
+    padding: 20px;
+    box-shadow: -3px 0 10px rgba(0,0,0,0.2);
+
+}
+
+.sidebar h2 {
+    margin-bottom: 20px;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin-bottom: 30px;
+}
+
+.sidebar ul li a {
+    color: #E1FFA9;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 24px;
+    font-family: sans-serif;
+}
+
+.sidebar ul li a:hover {
+    color: #95d5b2;
+}
+
+
 
 
 .container-cards {
@@ -224,7 +270,7 @@ tr:last-child td {
     align-items: center;
 }
 
-/* ... (Seu CSS anterior continua igual até o Modal) ... */
+
 
 .modal-overlay {
     display: none; 
@@ -238,7 +284,7 @@ tr:last-child td {
 .modal-overlay.ativo { display: flex; }
 
 .modal-card {
-    background: #E1FFA9; /* Verde claro do seu projeto */
+    background: #E1FFA9; 
     padding: 30px;
     border-radius: 20px;
     max-width: 400px;
@@ -271,3 +317,60 @@ tr:last-child td {
     font-weight: bold;
 }
 
+main {
+    flex: 1;
+}
+
+.main-hero {
+    flex: 1;
+    display: flex;
+    justify-content: center; 
+    align-items: center;    
+    height: 100vh;           
+}
+
+
+.hero {
+    display: flex;
+    justify-content: center; 
+    align-items: center;     
+    width: 100%;
+}
+
+
+.hero-content {
+    display: flex;
+    flex-direction: column;    
+    justify-content: center;  
+    width: 55%;    
+    align-items: flex-end;           
+}
+
+
+.hero-content h2 {
+    text-align: left;          
+    font-size: 45px;
+}
+
+.hero-content p {
+    text-align: right;         
+    font-size: 20px;
+    margin: 0;
+}
+
+.hero-content , .tabela-container{
+    padding: 30px;
+    border-radius: 20px;
+}
+
+.footer{
+    text-align: center;
+    color:  #E1FFA9  ;
+    padding: 15px 0;
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    background-color: #3A530A;
+    z-index: 1000;
+    left:0
+}

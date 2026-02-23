@@ -40,4 +40,11 @@ public class FilamentoController {
         List<FilamentoView> lista = filamentoService.listarTodos();
         return ResponseEntity.ok(lista);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<FilamentoView> atualizarFilamento(@PathVariable Long id,
+                                                            @RequestBody @Valid FilamentoForm filamentoForm) {
+        FilamentoView view = filamentoService.atualizarFilamento(id, filamentoForm);
+        return ResponseEntity.ok(view);
+    }
 }

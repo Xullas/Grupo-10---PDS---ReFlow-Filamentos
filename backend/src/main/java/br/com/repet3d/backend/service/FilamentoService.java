@@ -48,4 +48,33 @@ public class FilamentoService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
+    public FilamentoView atualizarFilamento(Long id, FilamentoForm filamentoForm) {
+
+        if (!filamentoRepository.existsById(id)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Filamento não encontrado");
+        }
+
+        Fornecedor fornecedor = null;
+        if (filamentoForm.fornecedorId() != null) {
+            fornecedor = fornecedorService.buscarEntidadePorId(filamentoForm.fornecedorId());
+        }
+
+        Filamento filamento = filamentoForm.toEntity(fornecedor);
+        Filamento filamentoAtualizado = Filamento.builder()
+                .id(id)
+                .material(filamento.getMaterial())
+                .cor(filamento.getCor())
+                .diametro(filamento.getDiametro())
+                .pesoGramas(filamento.getPesoGramas())
+                .origemReciclada(filamento.getOrigemReciclada())
+                .fornecedor(filamento.getFornecedor())
+                .fornecedorNomeManual(filamento.getFornecedorNomeManual())
+                .build();
+
+        Filamento salvo = filamentoRepository.save(filamentoAtualizado);
+
+        return FilamentoView.from(salvo);
+    }
+
 }

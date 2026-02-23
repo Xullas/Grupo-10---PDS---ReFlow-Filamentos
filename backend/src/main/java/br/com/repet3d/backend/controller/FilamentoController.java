@@ -47,4 +47,10 @@ public class FilamentoController {
         FilamentoView view = filamentoService.atualizarFilamento(id, filamentoForm);
         return ResponseEntity.ok(view);
     }
+
+    @DeleteMapping("/{id}")
+    public  ResponseEntity<Void> removerFilamento(@PathVariable Long id) {
+        filamentoService.deletarFilamento(id);
+        return ResponseEntity.noContent().build();
+    }
 }

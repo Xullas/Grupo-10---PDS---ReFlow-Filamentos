@@ -77,4 +77,13 @@ public class FilamentoService {
         return FilamentoView.from(salvo);
     }
 
+    @Transactional
+    public void deletarFilamento(Long id) {
+        if (!filamentoRepository.existsById(id)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Filamento não encontrado");
+        }
+
+        filamentoRepository.deleteById(id);
+    }
+
 }

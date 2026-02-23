@@ -7,6 +7,56 @@
       "endereco": "rua, 123 teste",
       "contato": "98798798798",
       "obs": "teste"
+    },
+    {
+      "id": "bdc7",
+      "cnpj": "12345678000199",
+      "nome": "Filamentos Tech LTDA",
+      "endereco": "rua, 123",
+      "contato": "84984984849",
+      "obs": "Fornecedor principal de pellets virgens de PLA e ABS."
+    },
+    {
+      "id": "eb63",
+      "cnpj": "12345678000199",
+      "nome": "Filamentos Tech LTDA",
+      "endereco": "rua, 123",
+      "contato": "84984984849",
+      "obs": "Fornecedor principal de pellets virgens de PLA e ABS."
+    },
+    {
+      "id": "5472",
+      "cnpj": "12345678000199",
+      "nome": "Filamentos Tech LTDA",
+      "endereco": "rua, 123",
+      "contato": "84984984849",
+      "obs": "Fornecedor principal de pellets virgens de PLA e ABS."
+    }
+  ],
+  "produtos": [
+    {
+      "material": "rPET (PET Reciclado)",
+      "cor": "Verde Ecológico",
+      "diametro": "5.00",
+      "peso": "1",
+      "origem": "Garrafas PET pós-consumo (Sistema Re-Flow)",
+      "id": "1"
+    },
+    {
+      "id": "3",
+      "material": "rPET (PET Reciclado)",
+      "cor": "Laranja Vibrante",
+      "diametro": 2.85,
+      "peso": 0.75,
+      "origem": "Garrafas PET transparentes selecionadas"
+    },
+    {
+      "id": "2d14",
+      "material": "filamento",
+      "cor": "Verde Ecológico",
+      "diametro": "2.00",
+      "peso": "0.07",
+      "origem": "Garrafas PET pós-consumo (Sistema Re-Flow)"
     }
   ]
 }

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("filamento")
@@ -32,5 +33,11 @@ public class FilamentoController {
     public ResponseEntity<FilamentoView> buscarPorId(@PathVariable Long id) {
         FilamentoView view = filamentoService.buscarPorId(id);
         return ResponseEntity.ok(view);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<FilamentoView>> listarTodosFilamentos(){
+        List<FilamentoView> lista = filamentoService.listarTodos();
+        return ResponseEntity.ok(lista);
     }
 }

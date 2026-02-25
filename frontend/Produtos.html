@@ -33,11 +33,15 @@
                     </div>
                     <div class="input-group">
                         <label for="cadastrar-peso">Peso</label>
-                        <input type="text" id="cadastrar-peso" name="peso" placeholder="1,00 kg" maxlength="10" required>
+                        <input type="text" id="cadastrar-peso" name="pesoGramas" placeholder="1,00 kg" maxlength="10" required>
                     </div>
-                    <div class="input-group">
-                        <label for="cadastrar-origem">Origem reciclada</label>
-                        <input type="text" id="cadastrar-origem" name="origem" placeholder="Origem reciclada" maxlength="50">
+                    <div class="input-group select-wrapper">
+                        <select id="cadastrar-origem" name="origemReciclada" class="campo-padronizado">
+                            <option value="" disabled selected>Origem reciclada</option>
+                            <option value="true">Sim</option>
+                            <option value="false">Não</option>
+                        </select>
+                        <span class="seta-select">&#9662;</span>
                     </div>
                     <button type="submit" class="btn-acao">Cadastrar</button>
                 </form>
@@ -63,9 +67,13 @@
                         <label for="editar-peso">Peso</label>
                         <input type="text" id="editar-peso" name="peso-editar" placeholder="1,00 kg" maxlength="10" required>
                     </div>
-                    <div class="input-group">
-                        <label for="editar-observacao">Origem reciclada</label>
-                        <input type="text" id="editar-origem" name="origem" placeholder="Origem reciclada" maxlength="50" required>
+                    <div class="input-group select-wrapper">
+                        <select id="editar-origem" name="origemReciclada" class="campo-padronizado">
+                            <option value="" disabled selected>Origem reciclada</option>
+                            <option value="true">Sim</option>
+                            <option value="false">Não</option>
+                        </select>
+                        <span class="seta-select">&#9662;</span>
                     </div>
                     <button type="submit" class="btn-acao">Salvar Alterações</button>
                 </form>
@@ -105,5 +113,3 @@
     <script src="produtos.js"></script>
 </body>
 </html>
-
-

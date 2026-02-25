@@ -19,7 +19,7 @@ async function listarTodos() {
     if (!corpoTabela) return;
 
     try {
-        const response = await fetch('http://localhost:8081/produtos');
+        const response = await fetch('http://localhost:8081/filamento');
         if (!response.ok) throw new Error();
 
         const produtos = await response.json();
@@ -30,9 +30,9 @@ async function listarTodos() {
             linha.innerHTML = `
                 <td>${f.material}</td>
                 <td>${f.cor}</td>
-                <td>${f.diametro}mm</td>
-                <td>${f.peso}kg</td>
-                <td>${f.origem || ''}</td>
+                <td>${f.diametro} mm</td>
+                <td>${(f.pesoGramas / 1000).toFixed(2).replace('.', ',')} kg</td>
+                <td>${f.origemReciclada ? 'Sim' : 'Não'}</td>
                 <td>
                     <div style="display:flex; gap:5px;">
                         <button class="btn-acao-edit" onclick="prepararEdicao(${f.id})">Editar</button>
@@ -50,7 +50,7 @@ async function listarTodos() {
 }
 
 
-// DOM 
+// DOM
 
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -59,38 +59,44 @@ document.addEventListener('DOMContentLoaded', () => {
 
     
     // MÁSCARAS
-    
+
     const aplicarMascaras = {
         diametro: (valor) => {
-            valor = valor.replace(/\D/g, "");
-            if (!valor) return "";
-            return (valor / 100).toFixed(2) + "mm";
+            let num = valor.replace(/\D/g, "");
+            if (!num) return "";
+            return (parseFloat(num) / 100).toFixed(2) + " mm";
         },
         peso: (valor) => {
-            valor = valor.replace(/\D/g, "");
-            if (!valor) return "";
-            return (valor / 100).toFixed(2) + "kg";
+            let num = valor.replace(/\D/g, "");
+            if (!num) return "";
+            return (parseFloat(num) / 100).toFixed(2) + " kg";
         }
     };
 
     const inputs = [
         { el: document.querySelector('input[name="diametro"]'), tipo: 'diametro' },
         { el: document.querySelector('input[name="diametro-editar"]'), tipo: 'diametro' },
-        { el: document.querySelector('input[name="peso"]'), tipo: 'peso' },
+        { el: document.querySelector('input[name="pesoGramas"]'), tipo: 'peso' },
         { el: document.querySelector('input[name="peso-editar"]'), tipo: 'peso' }
     ];
 
     inputs.forEach(item => {
         if (item.el) {
-            item.el.addEventListener('input', e => {
-                e.target.value = aplicarMascaras[item.tipo](e.target.value);
+            item.el.addEventListener('focus', e => {
+                e.target.value = e.target.value.replace(/[^0-9,]/g, "");
+            });
+
+            item.el.addEventListener('blur', e => {
+                if (e.target.value.trim() !== "") {
+                    e.target.value = aplicarMascaras[item.tipo](e.target.value);
+                }
             });
         }
     });
 
-    
+
     // CADASTRAR
-    
+
     const formCadastrar = document.getElementById('form-cadastrar');
 
     if (formCadastrar) {
@@ -101,18 +107,23 @@ document.addEventListener('DOMContentLoaded', () => {
             const produto = Object.fromEntries(formData.entries());
 
             produto.diametro = produto.diametro.replace('mm', '');
-            produto.peso = produto.peso.replace('kg', '');
+            produto.pesoGramas = Math.round(produto.pesoGramas.replace('kg', '').replace(',', '.') * 1000);
 
-            const pesoNum = parseFloat(produto.peso);
+            const pesoNum = parseFloat(produto.pesoGramas);
             const diametroNum = parseFloat(produto.diametro);
+
+            produto.origemReciclada = (produto.origemReciclada === 'true');
 
             if (!produto.material.trim() || isNaN(pesoNum) || isNaN(diametroNum)) {
                 dispararAlerta("Dados Inválidos", "Preencha material, peso e diâmetro corretamente.");
                 return;
             }
 
+            produto.pesoGramas = pesoNum;
+            produto.diametro = diametroNum;
+
             try {
-                const response = await fetch('http://localhost:8081/produtos', {
+                const response = await fetch('http://localhost:8081/filamento', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(produto)
@@ -122,6 +133,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 dispararAlerta("Sucesso", "Produto cadastrado!");
                 formCadastrar.reset();
+                document.getElementById('cadastrar-origem').value = "";
                 listarTodos();
 
             } catch {
@@ -130,9 +142,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    
+
     // BUSCAR PARA EDIÇÃO
-    
+
     const campoIdEditar = document.getElementById('editar-id');
 
     if (campoIdEditar) {
@@ -141,16 +153,17 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!id) return;
 
             try {
-                const response = await fetch(`http://localhost:8081/produtos/${id}`);
+                const response = await fetch(`http://localhost:8081/filamento/${id}`);
                 if (!response.ok) throw new Error();
 
                 const dados = await response.json();
 
                 document.getElementById('editar-material').value = dados.material;
                 document.getElementById('editar-cor').value = dados.cor;
-                document.getElementById('editar-diametro').value = dados.diametro + "mm";
-                document.getElementById('editar-peso').value = dados.peso + "kg";
-                document.getElementById('editar-origem').value = dados.origem || "";
+                document.getElementById('editar-diametro').value = dados.diametro.toFixed(2).replace('.', ',') + " mm";
+                const pesoKg = (dados.pesoGramas / 1000).toFixed(2).replace('.', ',');
+                document.getElementById('editar-peso').value = pesoKg + " kg";
+                document.getElementById('editar-origem').value = dados.origemReciclada.toString();
 
             } catch {
                 dispararAlerta("Erro", "Produto não encontrado.");
@@ -174,13 +187,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const dadosAtualizados = {
                 material: document.getElementById('editar-material').value,
                 cor: document.getElementById('editar-cor').value,
-                diametro: document.getElementById('editar-diametro').value.replace('mm',''),
-                peso: document.getElementById('editar-peso').value.replace('kg',''),
-                origem: document.getElementById('editar-origem').value
+                diametro: parseFloat(document.getElementById('editar-diametro').value.replace('mm','').replace(',', '.')),
+                pesoGramas: Math.round(parseFloat(document.getElementById('editar-peso').value.replace('kg', '').replace(',', '.')) * 1000),
+                origemReciclada: document.getElementById('editar-origem').value === 'true'
             };
 
             try {
-                const response = await fetch(`http://localhost:8081/produtos/${id}`, {
+                const response = await fetch(`http://localhost:8081/filamento/${id}`, {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(dadosAtualizados)
@@ -213,7 +226,7 @@ window.prepararEdicao = function(id) {
 
 window.excluirProduto = async function(id) {
     try {
-        const response = await fetch(`http://localhost:8081/produtos/${id}`, {
+        const response = await fetch(`http://localhost:8081/filamento/${id}`, {
             method: 'DELETE'
         });
 
@@ -226,4 +239,3 @@ window.excluirProduto = async function(id) {
         dispararAlerta("Erro", "Erro ao excluir.");
     }
 };
-

@@ -36,6 +36,21 @@
                         <input type="text" id="cadastrar-peso" name="pesoGramas" placeholder="1,00 kg" maxlength="10" required>
                     </div>
                     <div class="input-group select-wrapper">
+                        <select id="cadastrar-fornecedor-select" name="fornecedorNomeSelect" class="campo-padronizado">
+                            <option value="" selected>Selecione um fornecedor</option>
+                        </select>
+                        <span class="seta-select">&#9662;</span>
+                    </div>
+
+                    <div id="grupo-fornecedor-novo-cad" class="input-group" style="display: none; margin-top: 10px;">
+                        <label for="cadastrar-fornecedor-manual">Nome do fornecedor (Ex: Loja 3D XYZ)</label>
+                        <input type="text"
+                               id="cadastrar-fornecedor-manual"
+                               name="fornecedorNomeManual"
+                               placeholder="Digite o nome do novo fornecedor"
+                               maxlength="50">
+                    </div>
+                    <div class="input-group select-wrapper">
                         <select id="cadastrar-origem" name="origemReciclada" class="campo-padronizado">
                             <option value="" disabled selected>Origem reciclada</option>
                             <option value="true">Sim</option>
@@ -68,6 +83,15 @@
                         <input type="text" id="editar-peso" name="peso-editar" placeholder="1,00 kg" maxlength="10" required>
                     </div>
                     <div class="input-group select-wrapper">
+                        <select id="editar-fornecedor-select" name="fornecedorNomeSelectEditar" class="campo-padronizado">
+                        </select>
+                        <span class="seta-select">&#9662;</span>
+                    </div>
+
+                    <div id="grupo-fornecedor-novo-edit" class="input-group" style="display: none; margin-top: 10px;">
+                        <input type="text" id="editar-fornecedor-manual" name="fornecedorNomeManualEditar" placeholder="Nome do fornecedor">
+                    </div>
+                    <div class="input-group select-wrapper">
                         <select id="editar-origem" name="origemReciclada" class="campo-padronizado">
                             <option value="" disabled selected>Origem reciclada</option>
                             <option value="true">Sim</option>
@@ -89,6 +113,7 @@
                         <th>Cor</th>
                         <th>Diâmetro</th>
                         <th>Peso</th>
+                        <th>Fornecedor</th>
                         <th>Origem reciclada</th>
                         <th style="width: 180px;">Ações</th> </tr>
                     </tr>

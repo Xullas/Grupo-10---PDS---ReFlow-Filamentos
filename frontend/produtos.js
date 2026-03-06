@@ -11,6 +11,37 @@ function fecharModal() {
     document.getElementById('modalAlerta').classList.remove('ativo');
 }
 
+let mapaFornecedores = {};
+
+async function carregarSugestoesFornecedores() {
+    const selects = [
+        document.getElementById('cadastrar-fornecedor-select'),
+        document.getElementById('editar-fornecedor-select')
+    ];
+
+    try {
+        const response = await fetch('http://localhost:8081/fornecedor');
+        const fornecedores = await response.json();
+
+        selects.forEach(select => {
+            if (!select) return;
+            select.innerHTML = `
+                <option value="" selected>Selecione um fornecedor</option>
+                <option value="NOVO_FORNECEDOR">Fornecedor não listado / Outro</option>
+            `;
+
+            fornecedores.forEach(f => {
+                const opt = document.createElement('option');
+                opt.value = f.id;
+                opt.textContent = f.nome;
+                select.appendChild(opt);
+            });
+        });
+    } catch (error) {
+        console.error("Erro ao carregar fornecedores:", error);
+    }
+}
+
 
 // FUNÇÃO LISTAR
 
@@ -32,6 +63,7 @@ async function listarTodos() {
                 <td>${f.cor}</td>
                 <td>${f.diametro} mm</td>
                 <td>${(f.pesoGramas / 1000).toFixed(2).replace('.', ',')} kg</td>
+                <td>${f.fornecedorNome || 'Não informado'}</td>
                 <td>${f.origemReciclada ? 'Sim' : 'Não'}</td>
                 <td>
                     <div style="display:flex; gap:5px;">
@@ -94,6 +126,19 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    const configurarAlternanciaFornecedor = (idSelect, idGrupoInput) => {
+        const select = document.getElementById(idSelect);
+        const grupo = document.getElementById(idGrupoInput);
+        if (select && grupo) {
+            select.addEventListener('change', (e) => {
+                grupo.style.display = e.target.value === "NOVO_FORNECEDOR" ? "block" : "none";
+            });
+        }
+    };
+
+    configurarAlternanciaFornecedor('cadastrar-fornecedor-select', 'grupo-fornecedor-novo-cad');
+    configurarAlternanciaFornecedor('editar-fornecedor-select', 'grupo-fornecedor-novo-edit');
+
 
     // CADASTRAR
 
@@ -106,21 +151,37 @@ document.addEventListener('DOMContentLoaded', () => {
             const formData = new FormData(formCadastrar);
             const produto = Object.fromEntries(formData.entries());
 
-            produto.diametro = produto.diametro.replace('mm', '');
-            produto.pesoGramas = Math.round(produto.pesoGramas.replace('kg', '').replace(',', '.') * 1000);
+            const diametroLimpo = produto.diametro.replace('mm', '').trim().replace(',', '.');
+            const pesoKgLimpo = produto.pesoGramas.replace('kg', '').trim().replace(',', '.');
 
-            const pesoNum = parseFloat(produto.pesoGramas);
-            const diametroNum = parseFloat(produto.diametro);
+            const diametroNum = parseFloat(diametroLimpo);
+            const pesoGramasNum = Math.round(parseFloat(pesoKgLimpo) * 1000);
 
+            const selectForn = document.getElementById('cadastrar-fornecedor-select');
+            const inputManual = document.getElementById('cadastrar-fornecedor-manual');
+
+            let idParaEnviar = null;
+            let nomeManualParaEnviar = null;
+
+            if (selectForn.value === "NOVO_FORNECEDOR") {
+                idParaEnviar = null;
+                nomeManualParaEnviar = inputManual.value.trim();
+            } else if (selectForn.value !== "") {
+                idParaEnviar = Number(selectForn.value);
+                nomeManualParaEnviar = null;
+            }
+
+            produto.material = produto.material.trim();
+            produto.diametro = diametroNum;
+            produto.pesoGramas = pesoGramasNum;
+            produto.fornecedorId = idParaEnviar,
+            produto.fornecedorNomeManual = nomeManualParaEnviar;
             produto.origemReciclada = (produto.origemReciclada === 'true');
 
-            if (!produto.material.trim() || isNaN(pesoNum) || isNaN(diametroNum)) {
+            if (!produto.material || isNaN(diametroNum) || isNaN(pesoGramasNum)) {
                 dispararAlerta("Dados Inválidos", "Preencha material, peso e diâmetro corretamente.");
                 return;
             }
-
-            produto.pesoGramas = pesoNum;
-            produto.diametro = diametroNum;
 
             try {
                 const response = await fetch('http://localhost:8081/filamento', {
@@ -132,8 +193,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (!response.ok) throw new Error();
 
                 dispararAlerta("Sucesso", "Produto cadastrado!");
+
                 formCadastrar.reset();
                 document.getElementById('cadastrar-origem').value = "";
+                document.getElementById('grupo-fornecedor-novo-cad').style.display = "none";
+
+                if (typeof carregarSugestoesFornecedores === 'function') {
+                    carregarSugestoesFornecedores();
+                }
+
                 listarTodos();
 
             } catch {
@@ -154,9 +222,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
             try {
                 const response = await fetch(`http://localhost:8081/filamento/${id}`);
-                if (!response.ok) throw new Error();
+                if (!response.ok) throw new Error("Fetch falhou");
 
                 const dados = await response.json();
+
+                const selectEditar = document.getElementById('editar-fornecedor-select');
+                const grupoManualEdit = document.getElementById('grupo-fornecedor-novo-edit');
+                const inputManualEdit = document.getElementById('editar-fornecedor-manual');
+                const nomeFornecedorBanco = dados.fornecedorNome || "";
+
+                const opcaoEncontrada = Array.from(selectEditar.options).find(opt =>
+                    opt.textContent.toLowerCase() === nomeFornecedorBanco.toLowerCase()
+                );
+
+                if (nomeFornecedorBanco && opcaoEncontrada && opcaoEncontrada.value !== "NOVO_FORNECEDOR") {
+                    selectEditar.value = opcaoEncontrada.value;
+                    grupoManualEdit.style.display = "none";
+                } else if (nomeFornecedorBanco) {
+                    selectEditar.value = "NOVO_FORNECEDOR";
+                    grupoManualEdit.style.display = "block";
+                    inputManualEdit.value = nomeFornecedorBanco;
+                } else {
+                    selectEditar.value = "";
+                    grupoManualEdit.style.display = "none";
+                }
 
                 document.getElementById('editar-material').value = dados.material;
                 document.getElementById('editar-cor').value = dados.cor;
@@ -184,11 +273,27 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
+            const selectE = document.getElementById('editar-fornecedor-select');
+            const inputE = document.getElementById('editar-fornecedor-manual');
+
+            let idParaEnviar = null;
+            let nomeManualParaEnviar = null;
+
+            if (selectE.value === "NOVO_FORNECEDOR") {
+                idParaEnviar = null;
+                nomeManualParaEnviar = inputE.value.trim() || "Não informado";
+            } else if (selectE.value !== "") {
+                idParaEnviar = Number(selectE.value);
+                nomeManualParaEnviar = null;
+            }
+
             const dadosAtualizados = {
                 material: document.getElementById('editar-material').value,
                 cor: document.getElementById('editar-cor').value,
                 diametro: parseFloat(document.getElementById('editar-diametro').value.replace('mm','').replace(',', '.')),
                 pesoGramas: Math.round(parseFloat(document.getElementById('editar-peso').value.replace('kg', '').replace(',', '.')) * 1000),
+                fornecedorId: idParaEnviar,
+                fornecedorNomeManual: nomeManualParaEnviar,
                 origemReciclada: document.getElementById('editar-origem').value === 'true'
             };
 
@@ -199,11 +304,18 @@ document.addEventListener('DOMContentLoaded', () => {
                     body: JSON.stringify(dadosAtualizados)
                 });
 
-                if (!response.ok) throw new Error();
+                if (!response.ok) throw new Error("Erro na requisição");
 
                 dispararAlerta("Sucesso", "Produto atualizado!");
                 formEditar.reset();
+                if (inputE) {
+                    document.getElementById('grupo-fornecedor-novo-edit').style.display = "none";
+                }
+
                 listarTodos();
+                if (typeof carregarSugestoesFornecedores === 'function') {
+                    carregarSugestoesFornecedores();
+                }
 
             } catch {
                 dispararAlerta("Erro", "Erro ao atualizar.");
@@ -212,6 +324,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     listarTodos();
+    carregarSugestoesFornecedores()
 });
 
 

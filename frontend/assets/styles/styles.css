@@ -10,7 +10,7 @@
 
 body {
    
-    background-image: url('./assets/bg-rf-full.png');
+    background-image: url('../images/bg-rf-full.png');
     background-repeat: no-repeat;
     background-size: cover;        
     background-attachment: fixed;  

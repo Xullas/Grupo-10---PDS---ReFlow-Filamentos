@@ -2,139 +2,160 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>RE-FLOW Gerenciamento de produtos</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Re-Flow | Gerenciamento de Produtos</title>
     <link rel="stylesheet" href="assets/styles/styles.css">
 </head>
 <body>
-    <img src="assets/images/logoRF.png" alt="Logo RE-FLOW" class="logo">
-    <main>
-        <nav class="sidebar">
-            <ul>
-                <li><a href="index.html" class="active">Home</a></li>
-                <li><a href="Produtos.html">Produtos</a></li>
-                <li><a href="Fornecedores.html">Fornecedores</a></li>
-            </ul>
-        </nav>
-        <div class="container-cards">
-            <section class="card">
-                <h2>Cadastrar Produtos</h2>
-                <form id="form-cadastrar">
-                    <div class="input-group">
-                        <label for="cadastrar-material">Material</label>
-                        <input type="text" id="cadastrar-material" name="material" placeholder="Tipo de material" maxlength="50" required>
-                    </div>
-                    <div class="input-group">
-                        <label for="cadastrar-cor">Cor</label>
-                        <input type="text" id="cadastrar-cor" name="cor" placeholder="Cor" maxlength="20" required>
-                    </div>
-                    <div class="input-group">
-                        <label for="cadastrar-diametro">Diametro</label>
-                        <input type="text" id="cadastrar-diametro" name="diametro" placeholder="2,55 mm" maxlength="10" required>
-                    </div>
-                    <div class="input-group">
-                        <label for="cadastrar-peso">Peso</label>
-                        <input type="text" id="cadastrar-peso" name="pesoGramas" placeholder="1,00 kg" maxlength="10" required>
-                    </div>
-                    <div class="input-group select-wrapper">
-                        <select id="cadastrar-fornecedor-select" name="fornecedorNomeSelect" class="campo-padronizado">
-                            <option value="" selected>Selecione um fornecedor</option>
-                        </select>
-                        <span class="seta-select">&#9662;</span>
-                    </div>
 
-                    <div id="grupo-fornecedor-novo-cad" class="input-group" style="display: none; margin-top: 10px;">
-                        <label for="cadastrar-fornecedor-manual">Nome do fornecedor (Ex: Loja 3D XYZ)</label>
-                        <input type="text"
-                               id="cadastrar-fornecedor-manual"
-                               name="fornecedorNomeManual"
-                               placeholder="Digite o nome do novo fornecedor"
-                               maxlength="50">
-                    </div>
-                    <div class="input-group select-wrapper">
-                        <select id="cadastrar-origem" name="origemReciclada" class="campo-padronizado">
-                            <option value="" disabled selected>Origem reciclada</option>
-                            <option value="true">Sim</option>
-                            <option value="false">Não</option>
-                        </select>
-                        <span class="seta-select">&#9662;</span>
-                    </div>
-                    <button type="submit" class="btn-acao">Cadastrar</button>
-                </form>
-            </section>
+<header class="main-header">
+    <div class="logo">
+        <img src="assets/images/logoRF.png" alt="Logo Re-Flow">
+    </div>
+</header>
 
-            <section class="card">
-                <h2>Editar Produtos</h2>
-                <form id="form-editar">
-                    <input type="hidden" id="editar-id" name="id">
-                    <div class="input-group">
-                        <label for="editar-material">Material</label>
-                        <input type="text" id="editar-material" name="material" placeholder="Tipo de material" maxlength="50" required>
-                    </div>
-                    <div class="input-group">
-                        <label for="editar-cor">Cor</label>
-                        <input type="text" id="editar-cor" name="cor" placeholder="Cor" maxlength="20" required>
-                    </div>
-                    <div class="input-group">
-                        <label for="editar-peso">Diâmetro</label>
-                        <input type="text" id="editar-diametro" name="diametro-editar" placeholder="2,55mm" maxlength="10" required>
-                    </div>
-                    <div class="input-group">
-                        <label for="editar-peso">Peso</label>
-                        <input type="text" id="editar-peso" name="peso-editar" placeholder="1,00 kg" maxlength="10" required>
-                    </div>
-                    <div class="input-group select-wrapper">
-                        <select id="editar-fornecedor-select" name="fornecedorNomeSelectEditar" class="campo-padronizado">
-                        </select>
-                        <span class="seta-select">&#9662;</span>
-                    </div>
+<nav class="sidebar" aria-label="Navegação principal">
+    <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="Produtos.html" class="active" aria-current="page">Produtos</a></li>
+        <li><a href="Fornecedores.html">Fornecedores</a></li>
+    </ul>
+</nav>
 
-                    <div id="grupo-fornecedor-novo-edit" class="input-group" style="display: none; margin-top: 10px;">
-                        <input type="text" id="editar-fornecedor-manual" name="fornecedorNomeManualEditar" placeholder="Nome do fornecedor">
-                    </div>
-                    <div class="input-group select-wrapper">
-                        <select id="editar-origem" name="origemReciclada" class="campo-padronizado">
-                            <option value="" disabled selected>Origem reciclada</option>
-                            <option value="true">Sim</option>
-                            <option value="false">Não</option>
-                        </select>
-                        <span class="seta-select">&#9662;</span>
-                    </div>
-                    <button type="submit" class="btn-acao">Salvar Alterações</button>
-                </form>
-            </section>
-        </div>
+<main class="main-com-sidebar">
+    <div class="container-cards">
+        <section class="card">
+            <h2>Cadastrar Produtos</h2>
+            <form id="form-cadastrar" novalidate>
+                <div class="input-group">
+                    <label for="cadastrar-material">Material</label>
+                    <input type="text" id="cadastrar-material" name="material" placeholder="Tipo de material" maxlength="50" required>
+                    <small id="erro-cadastrar-material" class="mensagem-erro" aria-live="polite"></small>
+                </div>
+                <div class="input-group">
+                    <label for="cadastrar-cor">Cor</label>
+                    <input type="text" id="cadastrar-cor" name="cor" placeholder="Cor" maxlength="20" required>
+                    <small id="erro-cadastrar-cor" class="mensagem-erro" aria-live="polite"></small>
+                </div>
+                <div class="input-group">
+                    <label for="cadastrar-diametro">Diâmetro</label>
+                    <input type="text" id="cadastrar-diametro" name="diametro" placeholder="2,55 mm" maxlength="10" inputmode="decimal" required>
+                    <small id="erro-cadastrar-diametro" class="mensagem-erro" aria-live="polite"></small>
+                </div>
+                <div class="input-group">
+                    <label for="cadastrar-peso">Peso</label>
+                    <input type="text" id="cadastrar-peso" name="pesoGramas" placeholder="1,00 kg" maxlength="10" inputmode="decimal" required>
+                    <small id="erro-cadastrar-peso" class="mensagem-erro" aria-live="polite"></small>
+                </div>
+                <div class="input-group select-wrapper">
+                    <label for="cadastrar-fornecedor-select">Fornecedor</label>
+                    <select id="cadastrar-fornecedor-select" name="fornecedorNomeSelect" class="campo-padronizado">
+                        <option value="" selected>Selecione um fornecedor</option>
+                    </select>
+                    <span class="seta-select">&#9662;</span>
+                </div>
 
-        <section class="card secao-lista-card">
-            <h2>Lista de Produtos</h2>
-            <table class="tabela-container">
-                <thead>
-                    <tr>
-                        <th>Material</th>
-                        <th>Cor</th>
-                        <th>Diâmetro</th>
-                        <th>Peso</th>
-                        <th>Fornecedor</th>
-                        <th>Origem reciclada</th>
-                        <th style="width: 180px;">Ações</th> </tr>
-                    </tr>
-                </thead>
-                <tbody id="tabela-produtos"></tbody>
-            </table>
+                <div id="grupo-fornecedor-novo-cad" class="input-group campo-fornecedor-novo">
+                    <label for="cadastrar-fornecedor-manual">Nome do fornecedor (Ex: Loja 3D XYZ)</label>
+                    <input type="text" id="cadastrar-fornecedor-manual" name="fornecedorNomeManual" placeholder="Digite o nome do novo fornecedor" maxlength="50">
+                </div>
+
+                <div class="input-group select-wrapper">
+                    <label for="cadastrar-origem">Origem reciclada</label>
+                    <select id="cadastrar-origem" name="origemReciclada" class="campo-padronizado">
+                        <option value="" disabled selected>Origem reciclada</option>
+                        <option value="true">Sim</option>
+                        <option value="false">Não</option>
+                    </select>
+                    <span class="seta-select">&#9662;</span>
+                </div>
+                <button type="submit" class="btn-acao">Cadastrar</button>
+            </form>
         </section>
-    </main>
 
-    <div id="modalAlerta" class="modal-overlay">
-        <div class="modal-card">
-            <h3 id="modalTitulo">Aviso</h3>
-            <p id="modalMensagem">Mensagem aqui...</p>
-            <button id="btnFecharModal" class="btn-acao">Entendi</button>
-        </div>
+        <section class="card">
+            <h2>Editar Produtos</h2>
+            <form id="form-editar" novalidate>
+                <input type="hidden" id="editar-id" name="id">
+                <div class="input-group">
+                    <label for="editar-material">Material</label>
+                    <input type="text" id="editar-material" name="material" placeholder="Tipo de material" maxlength="50" required>
+                    <small id="erro-editar-material" class="mensagem-erro" aria-live="polite"></small>
+                </div>
+                <div class="input-group">
+                    <label for="editar-cor">Cor</label>
+                    <input type="text" id="editar-cor" name="cor" placeholder="Cor" maxlength="20" required>
+                    <small id="erro-editar-cor" class="mensagem-erro" aria-live="polite"></small>
+                </div>
+                <div class="input-group">
+                    <label for="editar-diametro">Diâmetro</label>
+                    <input type="text" id="editar-diametro" name="diametro-editar" placeholder="2,55mm" maxlength="10" required>
+                    <small id="erro-editar-diametro" class="mensagem-erro" aria-live="polite"></small>
+                </div>
+                <div class="input-group">
+                    <label for="editar-peso">Peso</label>
+                    <input type="text" id="editar-peso" name="peso-editar" placeholder="1,00 kg" maxlength="10" required>
+                    <small id="erro-editar-peso" class="mensagem-erro" aria-live="polite"></small>
+                </div>
+                <div class="input-group select-wrapper">
+                    <label for="editar-fornecedor-select">Fornecedor</label>
+                    <select id="editar-fornecedor-select" name="fornecedorNomeSelectEditar" class="campo-padronizado">
+                    </select>
+                    <span class="seta-select">&#9662;</span>
+                    <small id="erro-editar-fornecedor-select" class="mensagem-erro" aria-live="polite"></small>
+                </div>
+
+                <div id="grupo-fornecedor-novo-edit" class="input-group campo-fornecedor-novo">
+                    <label for="editar-fornecedor-manual">Nome do fornecedor</label>
+                    <input type="text" id="editar-fornecedor-manual" name="fornecedorNomeManualEditar" placeholder="Nome do fornecedor">
+                </div>
+
+                <div class="input-group select-wrapper">
+                    <label for="editar-origem">Origem reciclada</label>
+                    <select id="editar-origem" name="origemReciclada" class="campo-padronizado">
+                        <option value="" disabled selected>Origem reciclada</option>
+                        <option value="true">Sim</option>
+                        <option value="false">Não</option>
+                    </select>
+                    <span class="seta-select">&#9662;</span>
+                    <small id="erro-editar-origem" class="mensagem-erro" aria-live="polite"></small>
+                </div>
+                <button type="submit" class="btn-acao">Salvar Alterações</button>
+            </form>
+        </section>
     </div>
 
-     <footer class="footer">
-        <p>&copy; 2026 Re-Flow - Tecnologia em Reciclagem</p>
-    </footer>
+    <section class="card secao-lista-card">
+        <h2>Lista de Produtos</h2>
+        <table class="tabela-container">
+            <thead>
+            <tr>
+                <th>Material</th>
+                <th>Cor</th>
+                <th>Diâmetro</th>
+                <th>Peso</th>
+                <th>Fornecedor</th>
+                <th>Origem reciclada</th>
+                <th class="col-acoes">Ações</th>
+            </tr>
+            </thead>
+            <tbody id="tabela-produtos"></tbody>
+        </table>
+    </section>
+</main>
 
-    <script src="js/produtos.js"></script>
+<div id="modalAlerta" class="modal-overlay">
+    <div class="modal-card">
+        <h3 id="modalTitulo">Aviso</h3>
+        <p id="modalMensagem">Mensagem aqui...</p>
+        <button id="btnFecharModal" class="btn-acao">Entendi</button>
+    </div>
+</div>
+
+<footer class="footer">
+    <p>&copy; 2026 Re-Flow - Tecnologia em Reciclagem</p>
+</footer>
+
+<script src="js/produtos.js"></script>
 </body>
 </html>

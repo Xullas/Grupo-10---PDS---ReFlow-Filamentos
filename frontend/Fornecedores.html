@@ -2,106 +2,127 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>RE-FLOW Gerenciamento fornecedores</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Re-Flow | Gerenciamento de Fornecedores</title>
     <link rel="stylesheet" href="assets/styles/styles.css">
 </head>
 <body>
-    <img src="assets/images/logoRF.png" alt="Logo RE-FLOW" class="logo">
-    <main>
-        <nav class="sidebar">
-            <ul>
-                <li><a href="index.html" class="active">Home</a></li>
-                <li><a href="Produtos.html">Produtos</a></li>
-                <li><a href="Fornecedores.html">Fornecedores</a></li>
-            </ul>
-        </nav>
-        <div class="container-cards">
-            <section class="card">
-                <h2>Cadastrar Fornecedores</h2>
-                <form id="form-cadastrar">
-                    <div class="input-group">
-                        <label for="cadastrar-cnpj">CNPJ</label>
-                        <input type="text" id="cadastrar-cnpj" name="cnpj" placeholder="00.000.000/000-00" maxlength="18" required>
-                    </div>
-                    <div class="input-group">
-                        <label for="cadastrar-nome">Nome/ Razão social</label>
-                        <input type="text" id="cadastrar-nome" name="nome" placeholder="Nome/Razão social" maxlength="255" required>
-                    </div>
-                    <div class="input-group">
-                        <label for="cadastrar-endereço">Endereço</label>
-                        <input type="text" id="cadastrar-endereço" name="endereco" placeholder="Endereço" maxlength="255">
-                    </div>
-                    <div class="input-group">
-                        <label for="cadastrar-contato">Contato</label>
-                        <input type="text" id="cadastrar-contato" name="contato" placeholder="(00) 00000-0000" maxlength="255">
-                    </div>
-                    <div class="input-group">
-                        <label for="cadastrar-observacao">Observação</label>
-                        <input type="text" id="cadastrar-observacao" name="obs" placeholder="Observação" maxlength="255">
-                    </div>
-                    <button type="submit" class="btn-acao">Cadastrar</button>
-                </form>
-            </section>
 
-            <section class="card">
-                <h2>Editar Fornecedores</h2>
-                <form id="form-editar">
-                    <input type="hidden" id="editar-id" name="id">
-                    <div class="input-group">
-                        <label for="editar-cnpj">CNPJ</label>
-                        <input type="text" id="editar-cnpj" name="cnpj" placeholder="00.000.000/000-00" maxlength="50" required>
-                    </div>
-                    <div class="input-group">
-                        <label for="editar-nome">Nome/ Razão social</label>
-                        <input type="text" id="editar-nome" name="nome" placeholder="Nome/Razão social" maxlength="255">
-                    </div>
-                    <div class="input-group">
-                        <label for="editar-endereco">Endereço</label>
-                        <input type="text" id="editar-endereco" name="endereco" placeholder="Endereço" maxlength="255">
-                    </div>
-                    <div class="input-group">
-                        <label for="editar-contato">Contato</label>
-                        <input type="text" id="editar-contato" name="contato" placeholder="Contato" maxlength="255">
-                    </div>
-                    <div class="input-group">
-                        <label for="editar-observacao">Observação</label>
-                        <input type="text" id="editar-observacao" name="obs" placeholder="Observação" maxlength="255">
-                    </div>
-                    <button type="submit" class="btn-acao">Salvar Alterações</button>
-                </form>
-            </section>
-        </div>
+<header class="main-header">
+    <div class="logo">
+        <img src="assets/images/logoRF.png" alt="Logo Re-Flow">
+    </div>
+</header>
 
-        <section class="card secao-lista-card">
-            <h2>Lista de Fornecedores</h2>
-            <table class="tabela-container">
-                <thead>
-                    <tr>
-                        <th>Nome</th>
-                        <th>CNPJ</th>
-                        <th>Endereço</th>
-                        <th>Contato</th>
-                        <th>Obs</th>
-                        <th style="width: 180px;">Ações</th>
-                    </tr>
-                </thead>
-                <tbody id="tabela-fornecedores"></tbody>
-            </table>
+<nav class="sidebar" aria-label="Navegação principal">
+    <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="Produtos.html">Produtos</a></li>
+        <li><a href="Fornecedores.html" class="active" aria-current="page">Fornecedores</a></li>
+    </ul>
+</nav>
+
+<main>
+    <div class="container-cards">
+        <section class="card">
+            <h2>Cadastrar Fornecedores</h2>
+            <form id="form-cadastrar" novalidate>
+                <div class="input-group">
+                    <label for="cadastrar-cnpj">CNPJ</label>
+                    <input type="text" id="cadastrar-cnpj" name="cnpj" placeholder="00.000.000/0000-00" maxlength="18" inputmode="numeric" pattern="[0-9.\-/]{18}" required>
+                    <small id="erro-cadastrar-cnpj" class="mensagem-erro" aria-live="polite"></small>
+                </div>
+                <div class="input-group">
+                    <label for="cadastrar-nome">Nome / Razão social</label>
+                    <input type="text" id="cadastrar-nome" name="nome" placeholder="Nome/Razão social" maxlength="255" required>
+                    <small id="erro-cadastrar-nome" class="mensagem-erro" aria-live="polite"></small>
+                </div>
+                <div class="input-group">
+                    <label for="cadastrar-endereco">Endereço</label>
+                    <input type="text" id="cadastrar-endereco" name="endereco" placeholder="Endereço" maxlength="255">
+                </div>
+                <div class="input-group">
+                    <label for="cadastrar-contato">Contato</label>
+                    <input type="tel" id="cadastrar-contato" name="contato" placeholder="(00) 00000-0000" maxlength="15" inputmode="tel" autocomplete="tel">
+                </div>
+                <div class="input-group">
+                    <label for="cadastrar-observacao">Observação</label>
+                    <input type="text" id="cadastrar-observacao" name="obs" placeholder="Observação" maxlength="255">
+                </div>
+                <button type="submit" class="btn-acao">Cadastrar</button>
+            </form>
         </section>
-    </main>
 
-    <div id="modalAlerta" class="modal-overlay">
-        <div class="modal-card">
-            <h3 id="modalTitulo">Aviso</h3>
-            <p id="modalMensagem">Mensagem aqui...</p>
-            <button id="btnFecharModal" class="btn-acao">Entendi</button>
-        </div>
+        <section class="card">
+            <h2>Editar Fornecedores</h2>
+            <form id="form-editar" novalidate>
+                <input type="hidden" id="editar-id" name="id">
+
+                <div class="input-group">
+                    <label for="editar-cnpj">CNPJ</label>
+                    <input type="text" id="editar-cnpj" name="cnpj" placeholder="00.000.000/0000-00" maxlength="18" inputmode="numeric" required>
+                    <small id="erro-editar-cnpj" class="mensagem-erro" aria-live="polite"></small>
+                </div>
+
+                <div class="input-group">
+                    <label for="editar-nome">Nome / Razão social</label>
+                    <input type="text" id="editar-nome" name="nome" placeholder="Nome/Razão social" maxlength="255" required>
+                    <small id="erro-editar-nome" class="mensagem-erro" aria-live="polite"></small>
+                </div>
+
+                <div class="input-group">
+                    <label for="editar-endereco">Endereço</label>
+                    <input type="text" id="editar-endereco" name="endereco" placeholder="Endereço" maxlength="255">
+                    <small id="erro-editar-endereco" class="mensagem-erro" aria-live="polite"></small>
+                </div>
+
+                <div class="input-group">
+                    <label for="editar-contato">Contato</label>
+                    <input type="tel" id="editar-contato" name="contato" class="campo-padronizado" placeholder="(00) 00000-0000" maxlength="15" inputmode="tel">
+                    <small id="erro-editar-contato" class="mensagem-erro" aria-live="polite"></small>
+                </div>
+
+                <div class="input-group">
+                    <label for="editar-observacao">Observação</label>
+                    <input type="text" id="editar-observacao" name="obs" placeholder="Observação" maxlength="255">
+                    <small id="erro-editar-observacao" class="mensagem-erro" aria-live="polite"></small>
+                </div>
+
+                <button type="submit" class="btn-acao">Salvar Alterações</button>
+            </form>
+        </section>
     </div>
 
-     <footer class="footer">
-        <p>&copy; 2026 Re-Flow - Tecnologia em Reciclagem</p>
-    </footer>
-    
-    <script src="js/fornecedores.js"></script>
+    <section class="card secao-lista-card">
+        <h2>Lista de Fornecedores</h2>
+        <table class="tabela-container">
+            <thead>
+            <tr>
+                <th>Nome</th>
+                <th>CNPJ</th>
+                <th>Endereço</th>
+                <th>Contato</th>
+                <th>Obs</th>
+                <th style="width: 180px;">Ações</th>
+            </tr>
+            </thead>
+            <tbody id="tabela-fornecedores"></tbody>
+        </table>
+    </section>
+</main>
+
+<div id="modalAlerta" class="modal-overlay">
+    <div class="modal-card">
+        <h3 id="modalTitulo">Aviso</h3>
+        <p id="modalMensagem">Mensagem aqui...</p>
+        <button id="btnFecharModal" class="btn-acao">Entendi</button>
+    </div>
+</div>
+
+<footer class="footer">
+    <p>&copy; 2026 Re-Flow - Tecnologia em Reciclagem</p>
+</footer>
+
+<script src="js/fornecedores.js"></script>
 </body>
 </html>

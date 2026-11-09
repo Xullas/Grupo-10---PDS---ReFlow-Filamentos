@@ -57,10 +57,46 @@ document.addEventListener('DOMContentLoaded', () => {
     const formCadastrar = document.getElementById('form-cadastrar');
     const campoIdEditar = document.getElementById('editar-id');
 
+    // FUNÇÕES UTILITÁRIAS DE ERRO
+    function mostrarErroCampo(campo, mensagem) {
+        if (!campo) return;
+        const mensagemElement = document.getElementById(`erro-${campo.id}`);
+        campo.classList.toggle('campo-invalido', Boolean(mensagem));
+        if (mensagemElement) {
+            mensagemElement.textContent = mensagem;
+        }
+    }
+
+    function limparErroCampo(campo) {
+        mostrarErroCampo(campo, '');
+    }
+
     // CADASTRO
     if (formCadastrar) {
         formCadastrar.addEventListener('submit', async (event) => {
             event.preventDefault();
+
+            const campoCnpj = document.getElementById('cadastrar-cnpj');
+            const campoNome = document.getElementById('cadastrar-nome');
+            let formularioValido = true;
+
+            const cnpjLimpo = campoCnpj.value.replace(/\D/g, '');
+            if (cnpjLimpo.length !== 14) {
+                mostrarErroCampo(campoCnpj, 'Informe um CNPJ válido com 14 dígitos.');
+                formularioValido = false;
+            } else {
+                limparErroCampo(campoCnpj);
+            }
+
+            if (!campoNome.value.trim()) {
+                mostrarErroCampo(campoNome, 'Informe o nome ou razão social.');
+                formularioValido = false;
+            } else {
+                limparErroCampo(campoNome);
+            }
+
+            if (!formularioValido) return;
+
             const formData = new FormData(formCadastrar);
             const fornecedor = Object.fromEntries(formData.entries());
 
@@ -123,6 +159,27 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
+            const campoCnpj = document.getElementById('editar-cnpj');
+            const campoNome = document.getElementById('editar-nome');
+            let formularioValido = true;
+
+            const cnpjLimpo = campoCnpj.value.replace(/\D/g, '');
+            if (cnpjLimpo.length !== 14) {
+                mostrarErroCampo(campoCnpj, 'Informe um CNPJ válido com 14 dígitos.');
+                formularioValido = false;
+            } else {
+                limparErroCampo(campoCnpj);
+            }
+
+            if (!campoNome.value.trim()) {
+                mostrarErroCampo(campoNome, 'Informe o nome ou razão social.');
+                formularioValido = false;
+            } else {
+                limparErroCampo(campoNome);
+            }
+
+            if (!formularioValido) return;
+
             const dadosAtualizados = {
                 cnpj: document.getElementById('editar-cnpj').value.replace(/\D/g, ''),
                 nome: document.getElementById('editar-nome').value,
@@ -157,31 +214,64 @@ document.addEventListener('DOMContentLoaded', () => {
 // LISTAGEM
 window.listarTodos = async function() {
     const corpoTabela = document.getElementById('tabela-fornecedores');
+    if (!corpoTabela) return;
+
     try {
         const response = await fetch('http://localhost:8081/fornecedor');
-        if (response.ok) {
-            const fornecedores = await response.json();
-            corpoTabela.innerHTML = '';
-            fornecedores.forEach(f => {
-                const linha = document.createElement('tr');
-                linha.innerHTML = `
-                        <td>${f.nome}</td>
-                        <td>${aplicarMascaras.cnpj(f.cnpj)}</td>
-                        <td>${f.endereco}</td>
-                        <td>${aplicarMascaras.telefone(f.contato) || ''}</td>
-                        <td>${f.obs || ''}</td>
-                        <td>
-                            <div style="display: flex; gap: 5px;">
-                                <button class="btn-acao-edit" onclick="prepararEdicao(${f.id})">Editar</button>
-                                <button class="btn-acao-excluir" onclick="excluirFornecedor(${f.id})">Excluir</button>
-                            </div>
-                        </td>
-                    `;
-                corpoTabela.appendChild(linha);
-            });
-        }
+        if (!response.ok) throw new Error("Erro na rede");
+
+        const fornecedores = await response.json();
+        corpoTabela.innerHTML = '';
+
+        fornecedores.forEach(f => {
+            const linha = document.createElement('tr');
+
+            const tdNome = document.createElement('td');
+            tdNome.textContent = f.nome;
+
+            const tdCnpj = document.createElement('td');
+            tdCnpj.textContent = aplicarMascaras.cnpj(f.cnpj);
+
+            const tdEndereco = document.createElement('td');
+            tdEndereco.textContent = f.endereco || '';
+
+            const tdContato = document.createElement('td');
+            tdContato.textContent = f.contato ? aplicarMascaras.telefone(f.contato) : '';
+
+            const tdObs = document.createElement('td');
+            tdObs.textContent = f.obs || '';
+
+            const tdAcoes = document.createElement('td');
+            const divBotoes = document.createElement('div');
+            divBotoes.style.display = 'flex';
+            divBotoes.style.gap = '5px';
+
+            const btnEdit = document.createElement('button');
+            btnEdit.className = 'btn-acao-edit';
+            btnEdit.textContent = 'Editar';
+            btnEdit.addEventListener('click', () => prepararEdicao(f.id));
+
+            const btnExcluir = document.createElement('button');
+            btnExcluir.className = 'btn-acao-excluir';
+            btnExcluir.textContent = 'Excluir';
+            btnExcluir.addEventListener('click', () => excluirFornecedor(f.id));
+
+            divBotoes.appendChild(btnEdit);
+            divBotoes.appendChild(btnExcluir);
+            tdAcoes.appendChild(divBotoes);
+
+            linha.appendChild(tdNome);
+            linha.appendChild(tdCnpj);
+            linha.appendChild(tdEndereco);
+            linha.appendChild(tdContato);
+            linha.appendChild(tdObs);
+            linha.appendChild(tdAcoes);
+
+            corpoTabela.appendChild(linha);
+        });
     } catch (error) {
-        console.error('Erro ao listar:', error);
+        console.error('Erro ao listar fornecedores:', error);
+        dispararAlerta("Erro de Conexão", "Não foi possível carregar os fornecedores.");
     }
 }
 
@@ -195,6 +285,8 @@ window.prepararEdicao = function (id) {
 };
 
 window.excluirFornecedor = async function (id) {
+    const confirmou = window.confirm('Tem certeza de que deseja excluir este fornecedor?');
+    if (!confirmou) return;
 
     try {
         const response = await fetch(`http://localhost:8081/fornecedor/${id}`, {
@@ -202,15 +294,12 @@ window.excluirFornecedor = async function (id) {
         });
 
         if (response.ok) {
-
             dispararAlerta("Excluído", "O fornecedor foi removido do sistema RE-FLOW.");
-
             await listarTodos();
-
         } else {
             dispararAlerta("Erro", "Não foi possível excluir. O servidor retornou um erro.");
         }
     } catch (error) {
-        dispararAlerta("Erro de Conexão", "Verifique se o seu banco de dados (JSON Server) está rodando.");
+        dispararAlerta("Erro de Conexão", "Verifique se o seu servidor backend está rodando.");
     }
 };

@@ -11,6 +11,19 @@ function fecharModal() {
     document.getElementById('modalAlerta').classList.remove('ativo');
 }
 
+function mostrarErroCampo(campo, mensagem) {
+    if (!campo) return;
+    const mensagemElement = document.getElementById(`erro-${campo.id}`);
+    campo.classList.toggle('campo-invalido', Boolean(mensagem));
+    if (mensagemElement) {
+        mensagemElement.textContent = mensagem;
+    }
+}
+
+function limparErroCampo(campo) {
+    mostrarErroCampo(campo, '');
+}
+
 let mapaFornecedores = {};
 
 async function carregarSugestoesFornecedores() {
@@ -51,27 +64,59 @@ async function listarTodos() {
 
     try {
         const response = await fetch('http://localhost:8081/filamento');
-        if (!response.ok) throw new Error();
+        if (!response.ok) throw new Error("Falha ao buscar produtos");
 
         const produtos = await response.json();
         corpoTabela.innerHTML = '';
 
         produtos.forEach(f => {
             const linha = document.createElement('tr');
-            linha.innerHTML = `
-                <td>${f.material}</td>
-                <td>${f.cor}</td>
-                <td>${f.diametro} mm</td>
-                <td>${(f.pesoGramas / 1000).toFixed(2).replace('.', ',')} kg</td>
-                <td>${f.fornecedorNome || 'Não informado'}</td>
-                <td>${f.origemReciclada ? 'Sim' : 'Não'}</td>
-                <td>
-                    <div style="display:flex; gap:5px;">
-                        <button class="btn-acao-edit" onclick="prepararEdicao(${f.id})">Editar</button>
-                        <button class="btn-acao-excluir" onclick="excluirProduto(${f.id})">Excluir</button>
-                    </div>
-                </td>
-            `;
+
+            const tdMaterial = document.createElement('td');
+            tdMaterial.textContent = f.material;
+
+            const tdCor = document.createElement('td');
+            tdCor.textContent = f.cor;
+
+            const tdDiametro = document.createElement('td');
+            tdDiametro.textContent = `${f.diametro} mm`;
+
+            const tdPeso = document.createElement('td');
+            tdPeso.textContent = `${(f.pesoGramas / 1000).toFixed(2).replace('.', ',')} kg`;
+
+            const tdFornecedor = document.createElement('td');
+            tdFornecedor.textContent = f.fornecedorNome || 'Não informado';
+
+            const tdOrigem = document.createElement('td');
+            tdOrigem.textContent = f.origemReciclada ? 'Sim' : 'Não';
+
+            const tdAcoes = document.createElement('td');
+            const divBotoes = document.createElement('div');
+            divBotoes.style.display = 'flex';
+            divBotoes.style.gap = '5px';
+
+            const btnEdit = document.createElement('button');
+            btnEdit.className = 'btn-acao-edit';
+            btnEdit.textContent = 'Editar';
+            btnEdit.addEventListener('click', () => prepararEdicao(f.id));
+
+            const btnExcluir = document.createElement('button');
+            btnExcluir.className = 'btn-acao-excluir';
+            btnExcluir.textContent = 'Excluir';
+            btnExcluir.addEventListener('click', () => excluirProduto(f.id));
+
+            divBotoes.appendChild(btnEdit);
+            divBotoes.appendChild(btnExcluir);
+            tdAcoes.appendChild(divBotoes);
+
+            linha.appendChild(tdMaterial);
+            linha.appendChild(tdCor);
+            linha.appendChild(tdDiametro);
+            linha.appendChild(tdPeso);
+            linha.appendChild(tdFornecedor);
+            linha.appendChild(tdOrigem);
+            linha.appendChild(tdAcoes);
+
             corpoTabela.appendChild(linha);
         });
 
@@ -178,8 +223,42 @@ document.addEventListener('DOMContentLoaded', () => {
             produto.fornecedorNomeManual = nomeManualParaEnviar;
             produto.origemReciclada = (produto.origemReciclada === 'true');
 
-            if (!produto.material || isNaN(diametroNum) || isNaN(pesoGramasNum)) {
-                dispararAlerta("Dados Inválidos", "Preencha material, peso e diâmetro corretamente.");
+            const campoMaterial = document.getElementById('cadastrar-material');
+            const campoCor = document.getElementById('cadastrar-cor');
+            const campoDiametro = document.getElementById('cadastrar-diametro');
+            const campoPeso = document.getElementById('cadastrar-peso');
+
+            let formularioValido = true;
+
+            if (!produto.material) {
+                mostrarErroCampo(campoMaterial, 'Informe o tipo de material.');
+                formularioValido = false;
+            } else {
+                limparErroCampo(campoMaterial);
+            }
+
+            if (!produto.cor) {
+                mostrarErroCampo(campoCor, 'Informe a cor.');
+                formularioValido = false;
+            } else {
+                limparErroCampo(campoCor);
+            }
+
+            if (!Number.isFinite(diametroNum) || diametroNum <= 0) {
+                mostrarErroCampo(campoDiametro, 'Informe um diâmetro válido.');
+                formularioValido = false;
+            } else {
+                limparErroCampo(campoDiametro);
+            }
+
+            if (!Number.isFinite(pesoGramasNum) || pesoGramasNum <= 0) {
+                mostrarErroCampo(campoPeso, 'Informe um peso válido.');
+                formularioValido = false;
+            } else {
+                limparErroCampo(campoPeso);
+            }
+
+            if (!formularioValido) {
                 return;
             }
 
@@ -273,6 +352,47 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
+            const campoMaterial = document.getElementById('editar-material');
+            const campoCor = document.getElementById('editar-cor');
+            const campoDiametro = document.getElementById('editar-diametro');
+            const campoPeso = document.getElementById('editar-peso');
+
+            const diametroNum = parseFloat(campoDiametro.value.replace('mm', '').trim().replace(',', '.'));
+            const pesoKgNum = parseFloat(campoPeso.value.replace('kg', '').trim().replace(',', '.'));
+            const pesoGramasNum = Math.round(pesoKgNum * 1000);
+
+            let formularioValido = true;
+
+            if (!campoMaterial.value.trim()) {
+                mostrarErroCampo(campoMaterial, 'Informe o material.');
+                formularioValido = false;
+            } else {
+                limparErroCampo(campoMaterial);
+            }
+
+            if (!campoCor.value.trim()) {
+                mostrarErroCampo(campoCor, 'Informe a cor.');
+                formularioValido = false;
+            } else {
+                limparErroCampo(campoCor);
+            }
+
+            if (!Number.isFinite(diametroNum) || diametroNum <= 0) {
+                mostrarErroCampo(campoDiametro, 'Informe um diâmetro válido.');
+                formularioValido = false;
+            } else {
+                limparErroCampo(campoDiametro);
+            }
+
+            if (!Number.isFinite(pesoGramasNum) || pesoGramasNum <= 0) {
+                mostrarErroCampo(campoPeso, 'Informe um peso válido.');
+                formularioValido = false;
+            } else {
+                limparErroCampo(campoPeso);
+            }
+
+            if (!formularioValido) return;
+
             const selectE = document.getElementById('editar-fornecedor-select');
             const inputE = document.getElementById('editar-fornecedor-manual');
 
@@ -338,17 +458,21 @@ window.prepararEdicao = function(id) {
 };
 
 window.excluirProduto = async function(id) {
+    const confirmou = window.confirm('Tem certeza de que deseja excluir este produto?');
+    if (!confirmou) return;
+
     try {
         const response = await fetch(`http://localhost:8081/filamento/${id}`, {
             method: 'DELETE'
         });
 
-        if (!response.ok) throw new Error();
+        if (!response.ok) throw new Error("Falha ao excluir");
 
         dispararAlerta("Excluído", "Produto removido.");
         listarTodos();
 
-    } catch {
-        dispararAlerta("Erro", "Erro ao excluir.");
+    } catch (error) {
+        console.error(error);
+        dispararAlerta("Erro", "Não foi possível excluir o produto.");
     }
 };

@@ -5,14 +5,28 @@ const API_URL = 'http://localhost:8081';
 
 async function apiFetch(endpoint, options = {}) {
     const config = {
-        headers: { 'Content-Type': 'application/json' },
+        headers: {'Content-Type': 'application/json'},
         ...options
     };
     if (config.body && typeof config.body === 'object') {
         config.body = JSON.stringify(config.body);
     }
+
     const response = await fetch(`${API_URL}${endpoint}`, config);
-    if (!response.ok) throw new Error(`Erro na requisição: ${response.statusText}`);
+
+    if (!response.ok) {
+        const erro = new Error(`Erro na requisição: ${response.status}`);
+        erro.status = response.status;
+
+        try {
+            erro.dados = await response.json();
+        } catch {
+            erro.dados = null;
+        }
+
+        throw erro;
+    }
+
     return response.status !== 204 ? await response.json() : null;
 }
 
@@ -36,6 +50,23 @@ function gerenciarErroCampo(campoId, mensagem = '') {
 
     campo.classList.toggle('campo-invalido', Boolean(mensagem));
     if (msgEl) msgEl.textContent = mensagem;
+}
+
+function tratarErroApi(error, prefixoFormulario, mensagemFallback) {
+    if (error.status === 400 && Array.isArray(error.dados)) {
+        const mensagens = error.dados.map(err => {
+            if (prefixoFormulario && err.campo) {
+                gerenciarErroCampo(`${prefixoFormulario}-${err.campo}`, err.mensagem);
+            }
+            return err.mensagem;
+        });
+
+        dispararAlerta("Atenção", mensagens.join('\n'));
+        return;
+    }
+
+    console.error('Erro na requisição:', error);
+    dispararAlerta("Erro de Conexão", mensagemFallback);
 }
 
 const aplicarMascaras = {
@@ -182,7 +213,7 @@ document.addEventListener('DOMContentLoaded', () => {
             event.target.reset();
             await listarTodos();
         } catch (error) {
-            dispararAlerta("Erro de Conexão", "Não foi possível conectar ao servidor.");
+            tratarErroApi(error, 'cadastrar', "Não foi possível conectar ao servidor.");
         }
     });
 
@@ -221,7 +252,7 @@ document.addEventListener('DOMContentLoaded', () => {
             e.target.reset();
             await listarTodos();
         } catch (error) {
-            dispararAlerta("Erro", "Verifique se o backend está rodando na porta 8081.");
+            tratarErroApi(error, 'editar', "Verifique se o backend está rodando na porta 8081.");
         }
     });
 

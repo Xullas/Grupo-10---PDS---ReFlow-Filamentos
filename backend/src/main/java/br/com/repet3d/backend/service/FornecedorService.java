@@ -3,6 +3,7 @@ package br.com.repet3d.backend.service;
 import br.com.repet3d.backend.domain.Forms.FornecedorForm;
 import br.com.repet3d.backend.domain.Fornecedor;
 import br.com.repet3d.backend.domain.Views.FornecedorView;
+import br.com.repet3d.backend.infra.exception.RegraDeNegocioException;
 import br.com.repet3d.backend.repositories.FornecedorRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
@@ -24,6 +25,11 @@ public class FornecedorService {
     @Transactional
     public FornecedorView criarFornecedor(FornecedorForm fornecedorForm) {
         Fornecedor fornecedor = fornecedorForm.toEntity();
+
+        if (fornecedorRepository.existsByCnpj(fornecedor.getCnpj())) {
+            throw new RegraDeNegocioException("cnpj", "Já existe um fornecedor cadastrado com este CNPJ.");
+        }
+
         fornecedorRepository.save(fornecedor);
         return FornecedorView.from(fornecedor);
     }
@@ -45,6 +51,10 @@ public class FornecedorService {
     @Transactional
     public FornecedorView atualizarFornecedor(Long id, FornecedorForm fornecedorForm) {
         Fornecedor fornecedor = fornecedorForm.toEntity();
+
+        if (fornecedorRepository.existsByCnpj(fornecedor.getCnpj())) {
+            throw new RegraDeNegocioException("cnpj", "Já existe um fornecedor cadastrado com este CNPJ.");
+        }
 
         Fornecedor fornecedorAtualizado = Fornecedor.builder()
                 .id(id)
